@@ -1,0 +1,9 @@
+# estado local do monitor
+dados/
+*.db
+
+# cópias salvas do site (grandes e de terceiros)
+exploracao/
+
+__pycache__/
+*.pyc

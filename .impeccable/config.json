@@ -1,0 +1,26 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "skipped-heading",
+        "value": "*",
+        "files": [
+          ".impeccable/decision/assigned.html"
+        ],
+        "createdAt": "2026-11-10T15:41:51.442Z",
+        "reason": "Claude: throwaway decision-page sketch (gitignored), not shipped; the shipped template has its own heading outline"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          ".impeccable/decision/lexicon.html"
+        ],
+        "createdAt": "2026-11-10T15:41:52.932Z",
+        "reason": "Claude: decision sketch rendering the catalog challenger rw-lexicon's native cream stock; the user did not choose it and it is not shipped"
+      }
+    ]
+  }
+}

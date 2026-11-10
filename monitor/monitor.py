@@ -69,6 +69,8 @@ def carregar_config():
     cfg["_termos"] = [(peso, compilar(cfg["termos"].get(nivel, [])))
                       for nivel, peso in (("forte", 3), ("medio", 2), ("fraco", 1))]
     cfg["_negativos"] = compilar(cfg.get("negativos", []))
+    cfg["_classicos"] = compilar(cfg.get("classicos", []))
+    cfg["_temas"] = [(nome, compilar(termos)) for nome, termos in (cfg.get("temas") or {}).items()]
     return cfg
 
 
@@ -201,6 +203,12 @@ def pontuar(it, cfg):
             if rx.search(texto):
                 pts += peso
                 motivos.append(t.rstrip("*"))
+    classicos = [t for t, rx in cfg["_classicos"] if rx.search(texto)]
+    # Clássico vale 3 uma vez, mas só conta para o limiar quando o ano é conhecido (ver passa_limiar).
+    it["_pts_classico"] = 3 if classicos else 0
+    if classicos:
+        pts += 3
+        motivos += ["clássico: " + t for t in classicos]
     if it.get("_bonus") and pts:
         pts += it["_bonus"]
         motivos.append("categoria")
@@ -226,10 +234,16 @@ def preselecionar(it, cfg):
         return False
     pts, motivos = pontuar(it, cfg)
     it["pontos"], it["motivos"] = pts, motivos
-    if pts is None:
+    return passa_limiar(it, cfg)
+
+
+def passa_limiar(it, cfg):
+    if it["pontos"] is None:
         return False
-    minimo = cfg["pontuacao_minima"] if it["ano"] is not None else cfg["pontuacao_minima_sem_ano"]
-    return pts >= minimo
+    if it["ano"] is not None:
+        return it["pontos"] >= cfg["pontuacao_minima"]
+    # sem ano, clássico não conta: edição sem data de autor clássico costuma ser moderna
+    return it["pontos"] - it.get("_pts_classico", 0) >= cfg["pontuacao_minima_sem_ano"]
 
 
 def enriquecer(cli, it, cfg):
@@ -254,10 +268,7 @@ def enriquecer(cli, it, cfg):
         return False
     pts, motivos = pontuar(it, cfg)
     it["pontos"], it["motivos"] = pts, motivos
-    if pts is None:
-        return False
-    minimo = cfg["pontuacao_minima"] if it["ano"] is not None else cfg["pontuacao_minima_sem_ano"]
-    return pts >= minimo
+    return passa_limiar(it, cfg)
 
 
 # ---------------------------------------------------------------- rodada
@@ -378,88 +389,64 @@ def notificar(db, eventos, cfg):
 
 # ---------------------------------------------------------------- relatório
 
+BOILERPLATE_RE = re.compile(r"\b(?:SKU|C[oó]digo|Cod)\.?\s*:\s*[\w-]+\.?|\bCondi[cç][aã]o\s*:\s*(?:usado|novo)\.?", re.I)
+
+
+def limpar_descricao(d):
+    """Tira o cabeçalho de estoque de alguns sebos ("SKU: 123. Condição: USADO.") para o trecho mostrar o estado."""
+    return re.sub(r"\s{2,}", " ", BOILERPLATE_RE.sub("", d or "")).strip(" .;-")
+
+
+def sem_prefixo(s, prefixo):
+    s = s or ""
+    return s[len(prefixo):] if s.startswith(prefixo) else s
+
+
+def temas_do_item(r, cfg):
+    texto = norm(" ".join([r["nome"] or "", r["autor"] or "", r["editora"] or ""]))
+    temas = [nome for nome, termos in cfg["_temas"] if any(rx.search(texto) for _, rx in termos)]
+    if "Latim" not in temas and "latim" in norm(r["idioma"]) and "Latim" in dict(cfg["_temas"]):
+        temas.append("Latim")
+    if "clássico:" in (r["motivos"] or ""):
+        temas.insert(0, "Clássicos")
+    return temas or ["Outros"]
+
+
 def gerar_relatorio(db, cfg):
-    rows = db.execute("""
-        SELECT e.quando, e.tipo, e.preco AS preco_evento, e.detalhe, i.*
-        FROM eventos e JOIN itens i ON i.code = e.code
-        ORDER BY e.id DESC LIMIT 600""").fetchall()
-    ultima = rows[0]["quando"] if rows else ""
-    cards = []
-    for r in rows:
-        bom = r["preco_evento"] <= cfg["preco_bom"]
-        ano = r["ano"]
-        badges = []
-        if r["tipo"] != "inicial":
-            badges.append(f'<span class="b b-{"novo" if r["tipo"] == "novo" else "mud"}">{html.escape(r["tipo"])}</span>')
-        if r["quando"] == ultima and r["tipo"] != "inicial":
-            badges.append('<span class="b b-agora">esta rodada</span>')
-        if bom:
-            badges.append('<span class="b b-bom">bom preço</span>')
-        if ano is None:
-            badges.append('<span class="b b-semano">sem ano</span>')
-        elif r["ano_fonte"] and r["ano_fonte"] != "anúncio":
-            badges.append(f'<span class="b b-semano">ano pela {html.escape(r["ano_fonte"])}</span>')
-        meta = " · ".join(html.escape(x) for x in [r["autor"], r["editora"]] if x)
-        desc = html.escape((r["descricao"] or "")[:400])
-        cards.append(f"""
-<article class="card" data-bom="{int(bom)}" data-ano="{0 if ano is None else 1}" data-texto="{html.escape(norm(' '.join([r['nome'] or '', r['autor'] or '', r['editora'] or '', r['vendedor'] or ''])))}">
-  <a class="thumb" href="{html.escape(r['url'])}" target="_blank" rel="noopener"><img loading="lazy" src="{html.escape(r['imagem'] or '')}" alt=""></a>
-  <div class="body">
-    <div class="top"><span class="ano">{ano if ano is not None else "s/ano"}</span>{''.join(badges)}</div>
-    <h2><a href="{html.escape(r['url'])}" target="_blank" rel="noopener">{html.escape(r['nome'] or '')}</a></h2>
-    <p class="meta">{meta}</p>
-    {f'<p class="desc">{desc}</p>' if desc else ''}
-    <p class="foot">{html.escape(r['vendedor'] or '')}{' · frete grátis' if r['frete_gratis'] else ''} · cadastrado {html.escape(r['data_cadastro'] or '?')} · visto {html.escape(r['quando'])}{(' · ' + html.escape(r['detalhe'])) if r['detalhe'] else ''}</p>
-    <p class="why">{html.escape(r['motivos'] or '')}</p>
-  </div>
-  <div class="preco{' bom' if bom else ''}">R$&nbsp;{r['preco_evento']:.2f}</div>
-</article>""")
-    total = db.execute("SELECT COUNT(*) FROM itens").fetchone()[0]
-    pagina = f"""<!doctype html>
-<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="refresh" content="300">
-<title>Achados católicos</title>
-<style>
-:root {{ --bg:#f6f3ee; --card:#fff; --ink:#1f1b16; --mute:#6b6257; --line:#e4ddd2; --acc:#7a1f2b; --ok:#1d6b3a; --okbg:#e3f2e8; --warn:#8a5a00; --warnbg:#fbf0d9; }}
-@media (prefers-color-scheme: dark) {{ :root {{ --bg:#16130f; --card:#211d18; --ink:#efe9e0; --mute:#a89e91; --line:#3a332b; --acc:#e08a95; --ok:#7fd49c; --okbg:#1f3a28; --warn:#f0c46a; --warnbg:#3a2f17; }} }}
-* {{ box-sizing:border-box }}
-body {{ margin:0; background:var(--bg); color:var(--ink); font:15px/1.45 Georgia, "Times New Roman", serif; }}
-header {{ position:sticky; top:0; background:var(--bg); border-bottom:1px solid var(--line); padding:14px 16px; z-index:1 }}
-header h1 {{ margin:0 0 4px; font-size:20px; color:var(--acc) }}
-header p {{ margin:0; color:var(--mute); font:13px system-ui, sans-serif }}
-.ctl {{ display:flex; flex-wrap:wrap; gap:12px; margin-top:10px; font:14px system-ui, sans-serif; align-items:center }}
-.ctl input[type=search] {{ flex:1; min-width:180px; padding:7px 10px; border:1px solid var(--line); border-radius:6px; background:var(--card); color:var(--ink) }}
-main {{ max-width:980px; margin:0 auto; padding:12px 16px 40px }}
-.card {{ display:grid; grid-template-columns:72px 1fr auto; gap:14px; background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px; margin-bottom:10px }}
-.thumb img {{ width:72px; height:96px; object-fit:cover; border-radius:4px; background:var(--line) }}
-.body {{ min-width:0 }}
-h2 {{ font-size:16px; margin:2px 0 2px }} h2 a {{ color:var(--ink); text-decoration:none }} h2 a:hover {{ text-decoration:underline }}
-.top {{ display:flex; flex-wrap:wrap; gap:6px; align-items:center; font:12px system-ui, sans-serif }}
-.ano {{ font-weight:700; color:var(--acc); font-size:14px; margin-right:4px }}
-.b {{ padding:1px 7px; border-radius:10px; background:var(--line); color:var(--mute) }}
-.b-novo, .b-agora {{ background:var(--acc); color:#fff }} .b-mud {{ background:var(--warnbg); color:var(--warn) }}
-.b-bom {{ background:var(--okbg); color:var(--ok) }} .b-semano {{ background:var(--warnbg); color:var(--warn) }}
-.meta {{ margin:0; color:var(--mute) }}
-.desc {{ margin:6px 0 0; font-size:13px; color:var(--mute); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden }}
-.foot, .why {{ margin:6px 0 0; font:12px system-ui, sans-serif; color:var(--mute) }} .why {{ opacity:.7 }}
-.preco {{ font:700 17px system-ui, sans-serif; white-space:nowrap }} .preco.bom {{ color:var(--ok) }}
-@media (max-width:600px) {{ .card {{ grid-template-columns:56px 1fr }} .thumb img {{ width:56px; height:76px }} .preco {{ grid-column:2 }} }}
-</style></head><body>
-<header><h1>Achados católicos · até {cfg['ano_max']}</h1>
-<p>{len(rows)} achados · {total} anúncios monitorados · atualizado {html.escape(agora())} · bom preço ≤ R$ {cfg['preco_bom']:.0f}</p>
-<div class="ctl"><input type="search" id="q" placeholder="Filtrar por título, autor, editora, sebo…">
-<label><input type="checkbox" id="fb"> só bom preço</label><label><input type="checkbox" id="fa"> só com ano</label></div></header>
-<main id="lista">{''.join(cards) or '<p>Nenhum achado ainda.</p>'}</main>
-<script>
-const q=document.getElementById('q'),fb=document.getElementById('fb'),fa=document.getElementById('fa');
-const n=s=>s.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase();
-function f(){{const t=n(q.value);document.querySelectorAll('.card').forEach(c=>{{
- c.style.display=(!t||c.dataset.texto.includes(t))&&(!fb.checked||c.dataset.bom==='1')&&(!fa.checked||c.dataset.ano==='1')?'':'none';}});
- try{{localStorage.setItem('ev-f',JSON.stringify([q.value,fb.checked,fa.checked]))}}catch(e){{}}}}
-try{{const s=JSON.parse(localStorage.getItem('ev-f')||'null');if(s){{[q.value,fb.checked,fa.checked]=s}}}}catch(e){{}}
-[q,fb,fa].forEach(e=>e.addEventListener('input',f));f();
-</script></body></html>"""
-    REPORT_PATH.write_text(pagina, encoding="utf-8")
+    """Grava index.html: o modelo monitor/relatorio.html com os achados embutidos em JSON."""
+    # Só os eventos que a página usa: os "inicial" (linha de base) nunca aparecem no relatório.
+    eventos = {}
+    for e in db.execute("""SELECT e.code, e.quando, e.tipo, e.preco, e.detalhe FROM eventos e
+                           JOIN itens i ON i.code = e.code
+                           WHERE i.candidato = 1 AND e.tipo != 'inicial' ORDER BY e.id"""):
+        eventos.setdefault(e["code"], []).append([e["quando"], e["tipo"], e["preco"], e["detalhe"] or ""])
+    itens = []
+    for r in db.execute("SELECT * FROM itens WHERE candidato = 1"):
+        imagem = r["imagem"] or ""
+        it = {
+            # u e img vão sem o prefixo fixo (URL_LIVRO / URL_CAPA no modelo); o JS os recompõe
+            "c": r["code"], "t": r["nome"] or "", "a": r["autor"], "e": r["editora"],
+            "y": r["ano"], "yf": r["ano_fonte"], "l": r["idioma"], "p": r["preco"],
+            "u": sem_prefixo(r["url"], "https://www.estantevirtual.com.br/livro/"),
+            "img": "" if "indisponivel" in imagem else sem_prefixo(imagem, "https://static.estantevirtual.com.br/book/"),
+            "s": r["vendedor"], "fg": bool(r["frete_gratis"]), "d": limpar_descricao(r["descricao"])[:600],
+            "cad": r["data_cadastro"], "pv": r["primeira_vez"], "m": r["motivos"], "pts": r["pontos"],
+            "th": temas_do_item(r, cfg), "ev": eventos.get(r["code"]),
+        }
+        # campos vazios ficam de fora; o modelo preenche os padrões
+        itens.append({k: v for k, v in it.items() if v not in (None, "", False, [])})
+    ultima = db.execute("SELECT MAX(quando) FROM eventos").fetchone()[0] or ""
+    dados = {
+        "gerado": agora(), "ultima_rodada": ultima,
+        "monitorados": db.execute("SELECT COUNT(*) FROM itens").fetchone()[0],
+        "preco_bom": cfg["preco_bom"], "ano_max": cfg["ano_max"],
+        "temas": ["Clássicos"] + [n for n, _ in cfg["_temas"]] + ["Outros"],
+        "fontes": len(cfg["feeds"]) + len(cfg["buscas"]),
+        "itens": itens,
+    }
+    js = json.dumps(dados, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+    modelo = (DIR / "relatorio.html").read_text(encoding="utf-8")
+    REPORT_PATH.write_text(modelo.replace("/*__DADOS__*/null", js), encoding="utf-8")
 
 
 # ---------------------------------------------------------------- main

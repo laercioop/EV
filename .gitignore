@@ -7,3 +7,7 @@ exploracao/
 
 __pycache__/
 *.pyc
+
+# artefatos locais do Impeccable
+.impeccable/questions/
+.impeccable/decision/

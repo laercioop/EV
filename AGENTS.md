@@ -26,9 +26,10 @@ Para validar uma mudança, rode `python monitor/monitor.py` e confira a linha de
 ## Estrutura de pastas
 ```
 index.html        relatório gerado (único arquivo na raiz; publicado pelo GitHub Pages)
-monitor/          monitor.py e config.json
+monitor/          monitor.py, config.json e relatorio.html (modelo do relatório)
 ferramentas/      probe.py e probe2.py (exploração do site)
 docs/             NOTAS-ESTRUTURA.md
+PRODUCT.md        contexto de produto (skill Impeccable); .impeccable/surfaces/ guarda a direção visual
 dados/            monitor.db (fora do git)
 exploracao/       paginas/ e raw/, cópias salvas do site (fora do git)
 ```
@@ -47,7 +48,13 @@ Fluxo de uma rodada (`rodada()`):
    ano, usa `formattedAttributes.year` ou o menor ano encontrado na descrição. Depois reaplica filtro e pontuação.
 4. **Persistência**: **todos** os itens lidos vão para `itens`, o que é necessário para o critério de parada da
    paginação. Os candidatos geram linhas em `eventos` (`novo`, `preço caiu`, `novo exemplar`; `inicial` na linha de base).
-5. **Saída**: `gerar_relatorio` reescreve `index.html` na raiz (HTML estático com filtros em JS e refresh a cada 5 min);
+5. **Saída**: `gerar_relatorio` lê o modelo `monitor/relatorio.html` e troca `/*__DADOS__*/null` pelo JSON dos candidatos
+   (itens + eventos + temas), gravando `index.html` na raiz. Todo o visual e os filtros ficam no modelo, em JS puro:
+   abas Novidades (eventos não iniciais dos últimos 7 dias), Todos e Bom preço; temas; época; faixas de preço;
+   capa; frete; sebo; ordenação. O estado fica em `localStorage` (`ev2-estado`). Para manter a página leve: o JSON omite
+   campos vazios e eventos `inicial`, e guarda `u`/`img` sem o prefixo fixo (o modelo recompõe); as capas usam a miniatura
+   redimensionada do próprio servidor (`ims=152x208/filters:format(webp)`); a grade monta as fichas em lotes de 48 conforme
+   a rolagem. A cada 5 min, a página faz um `HEAD` e compara o ETag para saber se há versão nova;
    `notificar` mostra um toast do Windows via `powershell.exe` 5.1 (WinRT, `-EncodedCommand`). Não use `pwsh`,
    que não carrega os tipos WinRT.
 
@@ -55,6 +62,9 @@ Pontuação: os termos em `config.json["termos"]` valem forte = 3, médio = 2 e 
 `nome + autor + editora` normalizados (minúsculas, sem acento, pontuação virando espaço). O termo casa como palavra
 inteira, ou como prefixo se terminar em `*`. O `bonus` do feed só soma se algum termo já tiver pontuado.
 O ano **não** dá pontos, só filtra. O limiar é `pontuacao_minima` com ano conhecido e `pontuacao_minima_sem_ano` sem ano.
+`config.json["classicos"]` (autores e obras que um católico leria) soma 3 uma vez, mas **só conta para o limiar quando o ano
+é conhecido** (`passa_limiar`), porque um clássico sem data costuma ser edição moderna. `config.json["temas"]` só classifica as
+abas do relatório (`temas_do_item`, calculado a cada geração). Mudar temas **não** exige apagar o banco.
 
 **Atenção:** o campo `candidato` é calculado só na primeira vez que o item é visto. Depois de mudar termos,
 pesos ou filtros, apague `dados/monitor.db` para reclassificar (é rápido: cerca de 200 requisições e 10 s).

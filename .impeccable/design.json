@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-10T00:00:00-03:00",
+  "title": "Design System: Achados católicos",
+  "extensions": {
+    "colorMeta": {
+      "g0": { "role": "neutral", "displayName": "Grafite 0 · Papel", "canonical": "#ffffff", "dark": "#121419", "tonalRamp": ["#1c1e22", "#35383e", "#4f535a", "#646972", "#999ea6", "#c0c4c9", "#dadde0", "#eceeef"] },
+      "g1": { "role": "neutral", "displayName": "Grafite 1 · Chão", "canonical": "#eceeef", "dark": "#171a20", "tonalRamp": ["#1c1e22", "#35383e", "#4f535a", "#646972", "#999ea6", "#c0c4c9", "#dadde0", "#eceeef"] },
+      "g2": { "role": "neutral", "displayName": "Grafite 2 · Fio", "canonical": "#dadde0", "dark": "#22262d", "tonalRamp": ["#1c1e22", "#35383e", "#4f535a", "#646972", "#999ea6", "#c0c4c9", "#dadde0", "#eceeef"] },
+      "g3": { "role": "neutral", "displayName": "Grafite 3 · Borda de controle", "canonical": "#c0c4c9", "dark": "#353a43", "tonalRamp": ["#1c1e22", "#35383e", "#4f535a", "#646972", "#999ea6", "#c0c4c9", "#dadde0", "#eceeef"] },
+      "g4": { "role": "neutral", "displayName": "Grafite 4 · Fio duplo", "canonical": "#999ea6", "dark": "#5d636d", "tonalRamp": ["#1c1e22", "#35383e", "#4f535a", "#646972", "#999ea6", "#c0c4c9", "#dadde0", "#eceeef"] },
+      "g5": { "role": "neutral", "displayName": "Grafite 5 · Terciário", "canonical": "#646972", "dark": "#8a9099", "tonalRamp": ["#1c1e22", "#35383e", "#4f535a", "#646972", "#999ea6", "#c0c4c9", "#dadde0", "#eceeef"] },
+      "g6": { "role": "neutral", "displayName": "Grafite 6 · Suave", "canonical": "#4f535a", "dark": "#aab0b8", "tonalRamp": ["#1c1e22", "#35383e", "#4f535a", "#646972", "#999ea6", "#c0c4c9", "#dadde0", "#eceeef"] },
+      "g7": { "role": "neutral", "displayName": "Grafite 7 · Lápis", "canonical": "#35383e", "dark": "#d3d7dc", "tonalRamp": ["#1c1e22", "#35383e", "#4f535a", "#646972", "#999ea6", "#c0c4c9", "#dadde0", "#eceeef"] },
+      "g8": { "role": "neutral", "displayName": "Grafite 8 · Tinta", "canonical": "#1c1e22", "dark": "#eef0f2", "tonalRamp": ["#1c1e22", "#35383e", "#4f535a", "#646972", "#999ea6", "#c0c4c9", "#dadde0", "#eceeef"] },
+      "tabua": { "role": "secondary", "displayName": "Índigo de Guarda", "canonical": "#1f2b4a", "dark": "#1a2440", "tonalRamp": ["#10172b", "#1f2b4a", "#2f3e66", "#465784", "#6676a2", "#8d9bc0", "#b4c3ea", "#e3e8f6"] },
+      "ano-cor": { "role": "secondary", "displayName": "Índigo de Prelo", "canonical": "#1f2b4a", "dark": "#b4c3ea", "tonalRamp": ["#10172b", "#1f2b4a", "#2f3e66", "#465784", "#6676a2", "#8d9bc0", "#b4c3ea", "#e3e8f6"] },
+      "sangue": { "role": "tertiary", "displayName": "Bordô de Veio", "canonical": "#6b1f2a", "tonalRamp": ["#2e0d12", "#4a151d", "#6b1f2a", "#8c3441", "#ad5662", "#c9828b", "#e2b4ba", "#f5e3e5"] },
+      "carimbo": { "role": "primary", "displayName": "Violeta de Carimbo", "canonical": "#5b3fa6", "dark": "#b7a4f2", "tonalRamp": ["#241845", "#3a2870", "#5b3fa6", "#7558c0", "#9278d6", "#b7a4f2", "#d6cbf7", "#efeaf9"] },
+      "carimbo-fundo": { "role": "primary", "displayName": "Lilás de Mata-borrão", "canonical": "#efeaf9", "dark": "#2a2343", "tonalRamp": ["#241845", "#3a2870", "#5b3fa6", "#7558c0", "#9278d6", "#b7a4f2", "#d6cbf7", "#efeaf9"] },
+      "sobre-carimbo": { "role": "primary", "displayName": "Sobre o carimbo", "canonical": "#ffffff", "dark": "#17122a" },
+      "rotulo-fundo": { "role": "neutral", "displayName": "Rótulo · papel (fixo)", "canonical": "#ffffff" },
+      "rotulo-fio": { "role": "neutral", "displayName": "Rótulo · fio (fixo)", "canonical": "#c0c4c9" },
+      "rotulo-suave": { "role": "neutral", "displayName": "Rótulo · texto suave (fixo)", "canonical": "#4f535a" },
+      "rotulo-tinta": { "role": "neutral", "displayName": "Rótulo · tinta (fixo)", "canonical": "#1c1e22" },
+      "pano-vinho": { "role": "tertiary", "displayName": "Pano vinho", "canonical": "#5b1a24" },
+      "pano-verde": { "role": "tertiary", "displayName": "Pano verde", "canonical": "#23402f" },
+      "pano-indigo": { "role": "tertiary", "displayName": "Pano índigo", "canonical": "#1f2b4a" },
+      "pano-ocre": { "role": "tertiary", "displayName": "Pano ocre", "canonical": "#7a5a1c" },
+      "pano-ameixa": { "role": "tertiary", "displayName": "Pano ameixa", "canonical": "#4a2340" },
+      "pano-ardosia": { "role": "tertiary", "displayName": "Pano ardósia", "canonical": "#3a4148" },
+      "pano-tabaco": { "role": "tertiary", "displayName": "Pano tabaco", "canonical": "#5a2d14" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Rótulo", "purpose": "Título do relatório no rótulo de papel sobre a faixa marmorizada." },
+      "headline": { "displayName": "Cabeça da listagem", "purpose": "Nome do recorte atual com a contagem de livros." },
+      "title": { "displayName": "Título do livro", "purpose": "Título de cada ficha; o link cobre a ficha inteira." },
+      "ano": { "displayName": "Ano", "purpose": "Ano de publicação em índigo; 's.d.' em itálico g5 quando falta." },
+      "preco": { "displayName": "Preço a lápis", "purpose": "Preço no canto da ficha e a nota manuscrita do estado vazio." },
+      "preco-antigo": { "displayName": "Preço riscado", "purpose": "Preço anterior quando o preço cai, riscado a 2px." },
+      "body": { "displayName": "Interface", "purpose": "Texto de interface, abas, índice, autor e editora." },
+      "body-sm": { "displayName": "Interface pequena", "purpose": "Descrição, contagens, pé da ficha e rodapé." },
+      "label": { "displayName": "Grupo de filtro", "purpose": "Título de grupo no trilho de filtros, em maiúsculas." },
+      "carimbo": { "displayName": "Carimbo", "purpose": "Texto do carimbo de evento (Novo, Preço caiu, Mais um exemplar)." },
+      "etiqueta": { "displayName": "Etiqueta", "purpose": "Nome do sebo na etiqueta de fio duplo." }
+    },
+    "shadows": [
+      { "name": "papel", "value": "0 1px 2px rgba(28,30,34,.06), 0 4px 14px rgba(28,30,34,.05)", "dark": "0 1px 2px rgba(0,0,0,.4), 0 4px 14px rgba(0,0,0,.25)", "purpose": "Fichas e estado vazio em repouso." },
+      { "name": "papel-foco", "value": "0 2px 4px rgba(28,30,34,.07), 0 10px 26px rgba(28,30,34,.09)", "purpose": "Ficha sob o ponteiro." },
+      { "name": "rotulo-colado", "value": "0 1px 1px rgba(0,0,0,.35), 0 8px 22px rgba(5,10,25,.38)", "purpose": "Rótulo de papel sobre a faixa índigo." },
+      { "name": "capa", "value": "inset 0 0 0 1px rgba(0,0,0,.06), 1px 2px 4px rgba(0,0,0,.18)", "purpose": "Capa ou pano como livro pousado." },
+      { "name": "flutuante", "value": "0 10px 30px rgba(10,15,30,.35)", "purpose": "Aviso de relatório novo." },
+      { "name": "gaveta", "value": "0 -10px 40px rgba(10,15,30,.3)", "purpose": "Gaveta de filtros no celular." },
+      { "name": "aba-ativa", "value": "inset 0 3px 0 var(--carimbo)", "purpose": "Filete violeta no topo da aba ativa." }
+    ],
+    "motion": [
+      { "name": "bate", "value": "bate .42s cubic-bezier(.2,.9,.25,1) both", "purpose": "Carimbo bate (escala 1.9 com blur 2px, 0.94, assenta em 1 a 0.92 de opacidade). Só fichas em estreia, só sem movimento reduzido." },
+      { "name": "risca", "value": "risca .9s cubic-bezier(.3,.7,.2,1) forwards, delay +.25s", "purpose": "Círculo a lápis se desenha por stroke-dashoffset depois do carimbo." },
+      { "name": "atraso-escalonado", "value": "min(idx, 8) * 0.07s", "purpose": "Escalonamento das estreias pela ordem na grade." },
+      { "name": "gaveta", "value": "translate .32s cubic-bezier(.2,.8,.2,1)", "purpose": "Gaveta de filtros sobe de baixo; sem transição com movimento reduzido." },
+      { "name": "hover", "value": ".15s", "purpose": "Cor e fundo de abas, borda e sombra de fichas." }
+    ],
+    "breakpoints": [
+      { "name": "gaveta", "value": "max-width: 1100px", "purpose": "Trilho vira gaveta inferior; botão Filtros aparece." },
+      { "name": "celular", "value": "max-width: 900px", "purpose": "Calha 16px, ficha compacta, rótulo em largura total." },
+      { "name": "grade-1col", "value": "@container max-width: 655px", "purpose": "Grade limitada a 440px." },
+      { "name": "grade-2col", "value": "@container 656px a 991px", "purpose": "Grade limitada a 896px." }
+    ],
+    "materials": [
+      { "name": "marmorizado", "purpose": "Faixa do topo: feTurbulence fractalNoise baseFrequency 0.0035 0.016 (4 oitavas, seed 11) → tabela de veios índigo/bordô/pergaminho → feDisplacementMap scale 70 com turbulence 0.006 0.03 como pente." },
+      { "name": "trama-de-pano", "purpose": "Encadernação gerada: dois feTurbulence fractalNoise cruzados (1.8 x 0.35 e 0.35 x 1.8) em multiply sobre a cor do pano; texto dourado #e7d6a2." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botão primário",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ação direta em violeta de carimbo (Ver achados, Limpar filtros, Atualizar).",
+      "html": "<button class=\"ds-btn\">Ver 42 livros</button>",
+      "css": ".ds-btn { border:1px solid var(--carimbo, #5b3fa6); background:var(--carimbo, #5b3fa6); color:var(--sobre-carimbo, #fff); border-radius:8px; padding:8px 14px; font:600 15px/1.45 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; cursor:pointer; } .ds-btn:hover { filter:brightness(1.1); } .ds-btn:focus-visible { outline:2px solid var(--carimbo, #5b3fa6); outline-offset:2px; }"
+    },
+    {
+      "name": "Abas sobre a guarda",
+      "kind": "nav",
+      "refersTo": "aba",
+      "description": "Abas de recorte encostadas na base da faixa índigo; a ativa encaixa no chão da página.",
+      "html": "<div class=\"ds-abas\"><button class=\"ds-aba\">Novidades<span>4</span></button><button class=\"ds-aba ds-aba-on\">Todos<span>91</span></button><button class=\"ds-aba\">Bom preço<span>23</span></button></div>",
+      "css": ".ds-abas { display:flex; gap:2px; background:#1f2b4a; padding:16px 16px 0; font-family:system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; } .ds-aba { border:0; background:none; color:#cdd4e6; padding:12px 18px; border-radius:8px 8px 0 0; font-weight:600; font-size:15px; display:flex; gap:8px; align-items:baseline; cursor:pointer; transition:background .15s, color .15s; } .ds-aba span { font-weight:500; font-size:13px; color:#9aa5c2; font-variant-numeric:tabular-nums; } .ds-aba:hover { color:#fff; background:rgba(255,255,255,.07); } .ds-aba:focus-visible { outline:2px solid #fff; outline-offset:-3px; } .ds-aba-on, .ds-aba-on:hover { background:#eceeef; color:#5b3fa6; box-shadow:inset 0 3px 0 #5b3fa6; } .ds-aba-on span { color:#4f535a; }"
+    },
+    {
+      "name": "Pílula de tema",
+      "kind": "chip",
+      "refersTo": "tema",
+      "description": "Filtro de tema com contagem; ativo em violeta sobre lilás.",
+      "html": "<div class=\"ds-temas\"><button class=\"ds-tema\">Todos os temas<span>91</span></button><button class=\"ds-tema ds-tema-on\">Missais e liturgia<span>12</span></button><button class=\"ds-tema ds-tema-vazio\">Latim<span>0</span></button></div>",
+      "css": ".ds-temas { display:flex; gap:4px; font-family:system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; } .ds-tema { border:1px solid transparent; background:none; padding:6px 12px; border-radius:999px; font-size:14px; color:#4f535a; display:flex; gap:6px; align-items:baseline; cursor:pointer; } .ds-tema span { font-size:12px; color:#646972; } .ds-tema:hover { color:#1c1e22; background:#fff; } .ds-tema:focus-visible { outline:2px solid #5b3fa6; outline-offset:2px; } .ds-tema-on, .ds-tema-on span { color:#5b3fa6; } .ds-tema-on { border-color:#5b3fa6; background:#efeaf9; font-weight:600; } .ds-tema-vazio { opacity:.45; }"
+    },
+    {
+      "name": "Chip de filtro ativo",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Filtro aplicado, removível com um clique.",
+      "html": "<button class=\"ds-chip\">Até R$ 100<svg viewBox=\"0 0 24 24\" width=\"14\" height=\"14\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" aria-hidden=\"true\"><path d=\"M7 7l10 10M17 7 7 17\"/></svg></button>",
+      "css": ".ds-chip { display:inline-flex; align-items:center; gap:6px; border:1px solid #c0c4c9; background:#fff; color:#1c1e22; border-radius:999px; padding:3px 6px 3px 11px; font:13px system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; cursor:pointer; } .ds-chip:hover { border-color:#5b3fa6; color:#5b3fa6; } .ds-chip:focus-visible { outline:2px solid #5b3fa6; outline-offset:2px; }"
+    },
+    {
+      "name": "Campo de busca",
+      "kind": "input",
+      "refersTo": "input-busca",
+      "description": "Busca por título, autor, editora e sebo, com lupa SVG.",
+      "html": "<div class=\"ds-busca\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20 20-3.5-3.5\"/></svg><input type=\"search\" placeholder=\"Título, autor, editora, sebo…\"></div>",
+      "css": ".ds-busca { position:relative; width:264px; } .ds-busca svg { position:absolute; left:11px; top:50%; transform:translateY(-50%); color:#646972; } .ds-busca input { width:100%; box-sizing:border-box; padding:10px 12px 10px 36px; border:1px solid #c0c4c9; border-radius:8px; background:#fff; color:#1c1e22; font:15px system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; } .ds-busca input::placeholder { color:#646972; } .ds-busca input:focus { outline:2px solid #5b3fa6; outline-offset:0; border-color:transparent; }"
+    },
+    {
+      "name": "Índice de filtros",
+      "kind": "nav",
+      "refersTo": "indice",
+      "description": "Opções de filtro como linhas de índice com pontilhado e contagem viva.",
+      "html": "<fieldset class=\"ds-indice\"><legend>Época</legend><label><span class=\"r\">Todas</span><span class=\"p\"></span><span class=\"n\">91</span></label><label class=\"on\"><span class=\"r\">Até 1900</span><span class=\"p\"></span><span class=\"n\">14</span></label><label class=\"vz\"><span class=\"r\">1901 a 1930</span><span class=\"p\"></span><span class=\"n\">0</span></label></fieldset>",
+      "css": ".ds-indice { border:0; margin:0; padding:0; width:264px; font:15px/1.45 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; } .ds-indice legend { font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:#646972; margin-bottom:6px; padding:0; } .ds-indice label { display:flex; align-items:baseline; gap:6px; padding:5px 8px; margin:0 -8px; border-radius:6px; cursor:pointer; color:#35383e; } .ds-indice label:hover { background:rgba(28,30,34,.06); } .ds-indice .r { white-space:nowrap; } .ds-indice .p { flex:1; border-bottom:1.5px dotted #c0c4c9; transform:translateY(-4px); min-width:12px; } .ds-indice .n { font-size:13px; color:#646972; font-variant-numeric:tabular-nums; } .ds-indice .on .r, .ds-indice .on .n { color:#5b3fa6; font-weight:650; } .ds-indice .on .p { border-color:#5b3fa6; } .ds-indice .vz { opacity:.45; }"
+    },
+    {
+      "name": "Ficha de achado",
+      "kind": "card",
+      "refersTo": "ficha",
+      "description": "Guarda de livro de sebo: capa, ano, carimbo, título serifado, preço a lápis circulado, etiqueta do sebo.",
+      "html": "<article class=\"ds-ficha\"><div class=\"ds-capa\"><div class=\"ds-pano\"><span>Imitação de Cristo</span></div></div><div class=\"ds-alto\"><span class=\"ds-ano\">1921</span><span class=\"ds-carimbo\">Novo</span></div><h3>Imitação de Cristo</h3><p class=\"ds-autor\">Tomás de Kempis · Vozes</p><div class=\"ds-pe\"><span class=\"ds-etiqueta\">Sebo São Bento</span><span>visto 10/11</span></div><div class=\"ds-preco\"><span class=\"ds-v\"><small>R$</small>45<svg viewBox=\"0 0 128 60\" preserveAspectRatio=\"none\" aria-hidden=\"true\"><path d=\"M8 30 C 4 12, 40 3, 70 5 S 122 14, 118 32 C 114 50, 70 56, 40 52 S 2 42, 10 26 L 16 20\"/></svg></span><span class=\"ds-era\">R$ 80</span></div></article>",
+      "css": "@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap'); .ds-ficha { position:relative; width:340px; box-sizing:border-box; background:#fff; color:#1c1e22; border:1px solid #dadde0; border-radius:10px; padding:14px 14px 12px; display:grid; grid-template-columns:76px 1fr; grid-template-rows:auto auto auto 1fr auto; column-gap:14px; box-shadow:0 1px 2px rgba(28,30,34,.06), 0 4px 14px rgba(28,30,34,.05); font:15px/1.45 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; transition:border-color .15s, box-shadow .15s; } .ds-ficha:hover { border-color:#c0c4c9; box-shadow:0 2px 4px rgba(28,30,34,.07), 0 10px 26px rgba(28,30,34,.09); } .ds-capa { grid-row:1 / span 3; width:76px; height:104px; border-radius:3px; overflow:hidden; box-shadow:inset 0 0 0 1px rgba(0,0,0,.06), 1px 2px 4px rgba(0,0,0,.18); } .ds-pano { width:100%; height:100%; box-sizing:border-box; display:flex; flex-direction:column; justify-content:center; gap:5px; padding:8px 7px; color:#e7d6a2; background:#23402f; text-align:center; font:600 9.5px/1.15 'Source Serif 4', Georgia, serif; } .ds-pano::before, .ds-pano::after { content:''; height:1px; background:currentColor; opacity:.7; margin:0 4px; } .ds-alto { display:flex; align-items:baseline; gap:8px; min-height:30px; padding-right:96px; } .ds-ano { font:700 21px/1 'Source Serif 4', Georgia, serif; color:#1f2b4a; letter-spacing:-.01em; font-variant-numeric:tabular-nums lining-nums; } .ds-carimbo { display:inline-block; border:2px solid #5b3fa6; color:#5b3fa6; border-radius:3px; padding:1px 7px 0; font:800 11px/1.5 system-ui, sans-serif; letter-spacing:.12em; text-transform:uppercase; transform:rotate(-3deg); opacity:.92; align-self:center; } .ds-ficha h3 { margin:6px 0 2px; font:600 17px/1.25 'Source Serif 4', Georgia, serif; letter-spacing:-.005em; } .ds-autor { margin:0; color:#4f535a; font-size:14px; } .ds-pe { grid-column:1 / -1; grid-row:5; display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; margin-top:12px; padding-top:10px; border-top:1px dashed #dadde0; font-size:12.5px; color:#646972; } .ds-etiqueta { border:3px double #999ea6; padding:1px 8px; color:#35383e; font-size:11.5px; letter-spacing:.04em; text-transform:uppercase; font-weight:600; background:#fff; white-space:nowrap; } .ds-preco { position:absolute; right:12px; top:8px; text-align:right; } .ds-v { position:relative; display:inline-block; font:400 28px/1.15 Kalam, 'Segoe Print', cursive; color:#35383e; -webkit-text-stroke:.25px currentColor; padding:2px 8px; white-space:nowrap; } .ds-v small { font-size:.62em; margin-right:2px; } .ds-v svg { position:absolute; inset:-7px -8px -6px -8px; width:calc(100% + 16px); height:calc(100% + 13px); overflow:visible; color:#35383e; } .ds-v path { fill:none; stroke:currentColor; stroke-width:2.1; stroke-linecap:round; opacity:.85; } .ds-era { display:block; font:700 16px/1 Kalam, 'Segoe Print', cursive; color:#646972; text-decoration:line-through 2px #35383e; margin-top:-2px; }"
+    },
+    {
+      "name": "Rótulo sobre a guarda marmorizada",
+      "kind": "custom",
+      "refersTo": "rotulo",
+      "description": "Faixa índigo marmorizada em SVG com o rótulo de papel de fio interno e o indicador da rodada.",
+      "html": "<header class=\"ds-banda\"><svg class=\"ds-marmore\" aria-hidden=\"true\" preserveAspectRatio=\"none\"><filter id=\"ds-mm\" x=\"0\" y=\"0\" width=\"100%\" height=\"100%\" color-interpolation-filters=\"sRGB\"><feTurbulence type=\"fractalNoise\" baseFrequency=\"0.0035 0.016\" numOctaves=\"4\" seed=\"11\" result=\"r\"/><feColorMatrix in=\"r\" type=\"matrix\" values=\"1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 1\" result=\"c\"/><feComponentTransfer in=\"c\" result=\"v\"><feFuncR type=\"table\" tableValues=\"0.12 0.12 0.38 0.12 0.10 0.12 0.48 0.12 0.10 0.12\"/><feFuncG type=\"table\" tableValues=\"0.17 0.17 0.11 0.17 0.14 0.17 0.38 0.17 0.14 0.17\"/><feFuncB type=\"table\" tableValues=\"0.29 0.29 0.16 0.29 0.25 0.29 0.24 0.29 0.25 0.29\"/></feComponentTransfer><feTurbulence type=\"turbulence\" baseFrequency=\"0.006 0.03\" numOctaves=\"2\" seed=\"3\" result=\"p\"/><feDisplacementMap in=\"v\" in2=\"p\" scale=\"70\" xChannelSelector=\"R\" yChannelSelector=\"G\"/></filter><rect width=\"100%\" height=\"100%\" filter=\"url(#ds-mm)\"/></svg><div class=\"ds-rotulo\"><h1>Achados católicos <span>· até 1958</span></h1><p>91 achados · 3.600 anúncios monitorados</p></div><div class=\"ds-rodada\"><i></i>atualizado há 3 min</div></header>",
+      "css": "@import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap'); .ds-banda { position:relative; isolation:isolate; overflow:hidden; background:#1f2b4a; color:#fff; padding:26px 24px 22px; display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap; font-family:system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; } .ds-marmore { position:absolute; inset:0; width:100%; height:100%; z-index:-1; } .ds-rotulo { position:relative; background:#fff; color:#1c1e22; padding:14px 22px 13px; border:1px solid #c0c4c9; box-shadow:0 1px 1px rgba(0,0,0,.35), 0 8px 22px rgba(5,10,25,.38); } .ds-rotulo::before { content:''; position:absolute; inset:4px; border:1px solid #c0c4c9; pointer-events:none; } .ds-rotulo h1 { margin:0; font:700 clamp(21px, 2.3vw, 28px)/1.12 'Source Serif 4', Georgia, serif; letter-spacing:-.01em; } .ds-rotulo h1 span { color:#6b1f2a; font-weight:600; } .ds-rotulo p { margin:5px 0 0; font-size:13px; color:#4f535a; } .ds-rodada { display:flex; align-items:center; gap:8px; font-size:13px; color:#dfe4f0; background:rgba(12,17,32,.62); padding:7px 12px; border-radius:999px; } .ds-rodada i { width:8px; height:8px; border-radius:50%; background:#b7a4f2; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "A guarda do livro de sebo",
+    "overview": "Cada achado se lê como a folha de guarda de um livro usado: o ano impresso em serifa grande, o preço anotado a lápis no canto, circulado quando é pechincha e riscado e reescrito quando cai, a etiqueta do livreiro colada no pé e, no topo da página, uma faixa de papel de guarda marmorizado índigo. O mundo é frio e claro (grafite sobre papel acinzentado), não creme; o calor fica para a marmorização, para os panos de encadernação e para a tinta violeta do carimbo.\n\nA densidade é de ferramenta de triagem: fichas compactas em grade, um trilho de filtros com contagens vivas e nada que atrase a leitura de preço, ano e título. Os materiais do sebo (lápis, carimbo, fio duplo, pano, papel marmorizado) não são ornamento: cada um carrega um dado. O lápis é o preço, o carimbo é o evento, a etiqueta é o sebo, o pano é a ausência de capa.\n\nUm único movimento assinatura existe, e só para o que é novo para o leitor: o carimbo bate e o lápis circula, uma vez.",
+    "keyCharacteristics": [
+      "Neutros saídos de uma régua única de grafite com 9 tons (g0 a g8), com par claro e escuro.",
+      "Uma tinta de estado só, o violeta de carimbo, para tudo o que é vivo: novo, preço caiu, aba ativa, filtro escolhido, foco, seleção.",
+      "Marmorização procedural (SVG feTurbulence + feDisplacementMap) apenas na faixa do topo.",
+      "Três vozes de letra: serifa (títulos e ano), lápis manuscrito (preço), sans do sistema (interface).",
+      "Materiais com função: círculo a lápis, preço riscado, etiqueta de fio duplo, encadernação de pano gerada."
+    ],
+    "rules": [
+      { "name": "A Regra da Tinta Única", "body": "O violeta de carimbo é a única cor de estado. Se algo está ativo, novo, escolhido ou focado, está em violeta; se não está, não está. Nenhuma outra matiz marca estado na área de papel.", "section": "colors" },
+      { "name": "A Regra da Régua", "body": "Nenhum neutro fora de g0 a g8 nas superfícies de papel. Cinza novo entra como passo da régua ou não entra.", "section": "colors" },
+      { "name": "A Regra do Rótulo Fixo", "body": "O rótulo e o que fica sobre a faixa índigo não invertem no tema escuro: papel claro sobre guarda escura, nos dois temas.", "section": "colors" },
+      { "name": "A Regra do Lápis", "body": "O Kalam escreve preços e a nota manuscrita do estado vazio. Nunca títulos, nunca interface, nunca rótulos.", "section": "typography" },
+      { "name": "A Regra dos Algarismos", "body": "Todo número que se compara (preço, ano, contagem) usa `tabular-nums lining-nums`.", "section": "typography" },
+      { "name": "A Regra do Papel Baixo", "body": "Fichas ficam quase rentes ao chão. Sombra forte é só para o que está colado ou flutuando sobre outra camada.", "section": "elevation" }
+    ],
+    "dos": [
+      "**Do** tirar todo neutro da régua g0 a g8 e redefinir a régua inteira no tema escuro.",
+      "**Do** marcar todo estado vivo (novo, ativo, escolhido, foco, seleção) em violeta de carimbo, e só ele.",
+      "**Do** escrever preços em Kalam na cor do lápis; circular a lápis o bom preço e riscar o preço antigo quando cai.",
+      "**Do** usar a encadernação de pano gerada quando faltar capa, nunca um ícone de imagem quebrada.",
+      "**Do** mostrar contagens vivas ao lado de cada opção de filtro e esmaecer (45%) as que dão zero.",
+      "**Do** manter colunas da grade entre 320 e ~440px com os tetos por container query.",
+      "**Do** restringir a animação de estreia ao que é novo desde a última visita e respeitar `prefers-reduced-motion`."
+    ],
+    "donts": [
+      "**Don't** criar uma segunda cor de estado (verde de oferta, vermelho de desconto, selo de preço de marketplace); a pechincha é o círculo a lápis.",
+      "**Don't** levar a marmorização para fora da faixa do topo.",
+      "**Don't** usar fundo creme ou papel envelhecido: o papel é grafite frio claro.",
+      "**Don't** usar o Kalam para títulos, rótulos ou interface.",
+      "**Don't** inverter o rótulo da faixa no tema escuro; ele é papel claro nos dois temas.",
+      "**Don't** animar fichas já vistas nem repetir o carimbo a cada recarga."
+    ]
+  }
+}

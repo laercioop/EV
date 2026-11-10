@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Achados católicos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Source Serif sem o eixo opsz (arquivo ~2,4x menor). Kalam só desenha preços e os títulos de "vazio":
+     o text= baixa apenas esses caracteres (~4 KB por peso). Se um texto novo usar Kalam, inclua as letras aqui. -->
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&text=R%240123456789%2C.%20NSacdefhilmnorstuv&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* régua de grafite: todos os neutros saem daqui */
+  --g0:#ffffff; --g1:#eceeef; --g2:#dadde0; --g3:#c0c4c9; --g4:#999ea6; --g5:#646972; --g6:#4f535a; --g7:#35383e; --g8:#1c1e22;
+  --papel:var(--g0);
+  /* o rótulo é papel claro nos dois temas: valores fixos da régua clara (g0, g3, g6, g8) */
+  --rotulo-fundo:#ffffff; --rotulo-fio:#c0c4c9; --rotulo-suave:#4f535a; --rotulo-tinta:#1c1e22;
+  --chao:var(--g1);
+  --tinta:var(--g8);
+  --suave:var(--g6);
+  --fio:var(--g2);
+  --tabua:#1f2b4a;          /* papel de guarda índigo */
+  --tabua-escura:#141c33;
+  --ano-cor:#1f2b4a;
+  --sangue:#6b1f2a;         /* veio bordô da marmorização */
+  --ocre:#b08a3e;
+  --carimbo:#5b3fa6;        /* tinta violeta: todo estado vivo */
+  --carimbo-fundo:#efeaf9;
+  --sobre-carimbo:#ffffff;
+  --lapis:var(--g7);
+  --alerta:#8a5a00; --alerta-fundo:#fbf0d9;
+  --sombra:0 1px 2px rgba(28,30,34,.06), 0 4px 14px rgba(28,30,34,.05);
+  --max:1480px;
+  --gut:40px;
+  --serif:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --lapis-fonte:Kalam, "Segoe Print", "Bradley Hand", cursive;
+  --ui:system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --g0:#121419; --g1:#171a20; --g2:#22262d; --g3:#353a43; --g4:#5d636d; --g5:#8a9099; --g6:#aab0b8; --g7:#d3d7dc; --g8:#eef0f2;
+    --papel:var(--g2); --fio:var(--g3);
+    --tabua:#1a2440; --tabua-escura:#10172b; --ano-cor:#b4c3ea;
+    --carimbo:#b7a4f2; --carimbo-fundo:#2a2343; --sobre-carimbo:#17122a;
+    --alerta:#f0c46a; --alerta-fundo:#3a2f17;
+    --sombra:0 1px 2px rgba(0,0,0,.4), 0 4px 14px rgba(0,0,0,.25);
+  }
+}
+* { box-sizing:border-box }
+html { -webkit-text-size-adjust:100%; scrollbar-color:var(--g4) var(--chao) }
+body { margin:0; background:var(--chao); color:var(--tinta); font:15px/1.45 var(--ui); }
+::selection { background:var(--carimbo); color:var(--sobre-carimbo) }
+a { color:inherit; text-underline-offset:3px; text-decoration-thickness:1px }
+:focus-visible { outline:2px solid var(--carimbo); outline-offset:2px; border-radius:4px }
+button, select, input { font:inherit; color:inherit }
+.num { font-variant-numeric:tabular-nums lining-nums }
+.sr { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap }
+
+/* ------------------------------------------------ faixa de papel de guarda */
+.banda { position:relative; background:var(--tabua); color:#fff; overflow:hidden; isolation:isolate }
+.marmore { position:absolute; inset:0; width:100%; height:100%; z-index:-1 }
+.banda-in { max-width:var(--max); margin:0 auto; padding:26px var(--gut) 22px; display:flex; align-items:flex-end; justify-content:space-between; gap:24px; flex-wrap:wrap }
+.rotulo { position:relative; background:var(--rotulo-fundo); color:var(--rotulo-tinta); padding:14px 22px 13px; border:1px solid var(--rotulo-fio);
+  box-shadow:0 1px 1px rgba(0,0,0,.35), 0 8px 22px rgba(5,10,25,.38); }
+.rotulo::before { content:""; position:absolute; inset:4px; border:1px solid var(--rotulo-fio); pointer-events:none }
+.rotulo h1 { margin:0; font:700 clamp(21px, 2.3vw, 28px)/1.12 var(--serif); letter-spacing:-.01em; text-wrap:balance }
+.rotulo h1 span { color:var(--sangue); font-weight:600 }
+.rotulo p { margin:5px 0 0; font-size:13px; color:var(--rotulo-suave); text-wrap:balance }
+.rodada { display:flex; align-items:center; gap:8px; font-size:13px; color:#dfe4f0; background:rgba(12,17,32,.62);
+  padding:7px 12px; border-radius:999px; backdrop-filter:blur(2px) }
+.rodada i { width:8px; height:8px; border-radius:50%; background:#b7a4f2 }
+.rodada.parada i { background:#f0c46a }
+.abas-faixa { background:rgba(13,19,36,.78) }
+.abas { max-width:var(--max); margin:0 auto; padding:0 var(--gut); display:flex; gap:2px; overflow-x:auto; scrollbar-width:none }
+.abas::-webkit-scrollbar { display:none }
+.aba { border:0; background:none; color:#cdd4e6; padding:12px 18px 12px; border-radius:8px 8px 0 0; cursor:pointer;
+  font-weight:600; font-size:15px; white-space:nowrap; display:flex; align-items:baseline; gap:8px; transition:background .15s, color .15s }
+.aba:hover { color:#fff; background:rgba(255,255,255,.07) }
+.aba .n { font-weight:500; font-size:13px; color:#9aa5c2 }
+.aba[aria-selected="true"] { background:var(--chao); color:var(--carimbo); box-shadow:inset 0 3px 0 var(--carimbo) }
+.aba[aria-selected="true"] .n { color:var(--suave) }
+.aba:focus-visible { outline-color:#fff; outline-offset:-3px }
+
+/* ------------------------------------------------ barra de temas */
+.temas-faixa { position:sticky; top:0; z-index:5; background:color-mix(in srgb, var(--chao) 92%, transparent);
+  backdrop-filter:saturate(1.2) blur(8px); border-bottom:1px solid var(--fio) }
+.temas-in { max-width:var(--max); margin:0 auto; padding:4px var(--gut); display:flex; align-items:center; gap:10px }
+.temas { display:flex; gap:4px; overflow-x:auto; scrollbar-width:none; padding:4px 0; flex:1; min-width:0;
+  mask-image:linear-gradient(90deg, #000 calc(100% - 40px), transparent) }
+.temas::-webkit-scrollbar { display:none }
+.tema { border:1px solid transparent; background:none; padding:6px 12px; border-radius:999px; cursor:pointer; white-space:nowrap;
+  font-size:14px; color:var(--suave); display:flex; gap:6px; align-items:baseline }
+.tema .n { font-size:12px; color:var(--g5) }
+.tema:hover { color:var(--tinta); background:var(--g0) }
+.tema[aria-pressed="true"] { color:var(--carimbo); border-color:var(--carimbo); background:var(--carimbo-fundo); font-weight:600 }
+.tema[aria-pressed="true"] .n { color:var(--carimbo) }
+.tema[data-vazio] { opacity:.45 }
+.btn-filtros { display:none; border:1px solid var(--g3); background:var(--papel); border-radius:8px; padding:6px 12px; cursor:pointer; font-weight:600; font-size:14px; white-space:nowrap }
+.btn-filtros b[hidden] { display:none }
+.btn-filtros b { display:inline-grid; place-items:center; min-width:20px; height:20px; padding:0 6px; margin-left:4px; border-radius:999px; background:var(--carimbo); color:var(--sobre-carimbo); font-size:12px }
+
+/* ------------------------------------------------ corpo */
+.corpo > * { min-width:0 }
+.corpo { max-width:var(--max); margin:0 auto; padding:24px var(--gut) 56px; display:grid; grid-template-columns:264px 1fr; gap:32px; align-items:start }
+.trilho { position:sticky; top:68px; max-height:calc(100vh - 84px); overflow:auto; padding-right:4px; scrollbar-width:thin }
+.trilho-topo { display:none }
+.busca { position:relative; margin-bottom:22px }
+.busca svg { position:absolute; left:11px; top:50%; translate:0 -50%; color:var(--g5) }
+.busca input { width:100%; padding:10px 12px 10px 36px; border:1px solid var(--g3); border-radius:8px; background:var(--papel); }
+.busca input::placeholder { color:var(--g5) }
+.busca input:focus { outline:2px solid var(--carimbo); outline-offset:0; border-color:transparent }
+fieldset { border:0; margin:0 0 20px; padding:0; min-width:0 }
+legend { font-size:12px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--g5); margin-bottom:6px; padding:0 }
+.indice label { display:flex; align-items:baseline; gap:6px; padding:5px 8px; margin:0 -8px; border-radius:6px; cursor:pointer; color:var(--g7) }
+.indice label:hover { background:color-mix(in srgb, var(--tinta) 6%, transparent) }
+.indice input { position:absolute; opacity:0; pointer-events:none }
+.indice .rot { white-space:nowrap }
+.indice .pontos { flex:1; border-bottom:1.5px dotted var(--g3); translate:0 -4px; min-width:12px }
+.indice .n { font-size:13px; color:var(--g5) }
+.indice input:checked + .rot { color:var(--carimbo); font-weight:650 }
+.indice input:checked ~ .n { color:var(--carimbo); font-weight:650 }
+.indice input:checked ~ .pontos { border-color:var(--carimbo) }
+.indice input:focus-visible + .rot { outline:2px solid var(--carimbo); outline-offset:2px; border-radius:3px }
+.indice label[data-vazio] { opacity:.45 }
+.caixa { display:flex; gap:10px; align-items:center; cursor:pointer; color:var(--g7) }
+.caixa input { accent-color:var(--carimbo); width:17px; height:17px; margin:0 }
+select { width:100%; padding:9px 10px; border:1px solid var(--g3); border-radius:8px; background:var(--papel); accent-color:var(--carimbo) }
+.limpar { border:0; background:none; color:var(--carimbo); padding:0; cursor:pointer; font-weight:600; text-decoration:underline; text-underline-offset:3px }
+.limpar[hidden] { display:none }
+
+.cabeca { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:14px; min-height:38px }
+.cabeca h2 { margin:0; font:600 19px/1.2 var(--serif) }
+.cabeca h2 small { font:14px var(--ui); color:var(--suave); margin-left:6px }
+.ordem { display:flex; align-items:center; gap:8px; font-size:14px; color:var(--suave) }
+.ordem select { width:auto; padding:7px 10px }
+.ativos { display:flex; flex-wrap:wrap; gap:6px; margin:-4px 0 14px }
+.ativos:empty { display:none }
+.chip { display:inline-flex; align-items:center; gap:6px; border:1px solid var(--g3); background:var(--papel); border-radius:999px; padding:3px 6px 3px 11px; font-size:13px; cursor:pointer }
+.chip:hover { border-color:var(--carimbo); color:var(--carimbo) }
+.chip svg { width:14px; height:14px }
+
+/* ------------------------------------------------ fichas */
+main { container-type:inline-size }
+/* colunas inteiras: o auto-fill decide quantas cabem; estes tetos impedem que uma coluna estique além de ~440px */
+@container (max-width: 655px) { .grade, .cabeca, .ativos { max-width:440px } }
+@container (min-width: 656px) and (max-width: 991px) { .grade, .cabeca, .ativos { max-width:896px } }
+.grade { display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap:16px }
+.ficha { position:relative; background:var(--papel); border:1px solid var(--fio); border-radius:10px; padding:14px 14px 12px;
+  display:grid; grid-template-columns:76px 1fr; grid-template-rows:auto auto auto 1fr auto; column-gap:14px; box-shadow:var(--sombra); transition:border-color .15s, box-shadow .15s }
+.ficha:hover { border-color:var(--g3); box-shadow:0 2px 4px rgba(28,30,34,.07), 0 10px 26px rgba(28,30,34,.09) }
+.capa { grid-row:1 / span 3; display:block; width:76px; height:104px; border-radius:3px; overflow:hidden; background:var(--g2); align-self:start;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.06), 1px 2px 4px rgba(0,0,0,.18) }
+.capa img { width:100%; height:100%; object-fit:cover; display:block }
+.pano { width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; gap:5px; padding:8px 7px; color:#e7d6a2;
+  background:var(--pano) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='90' height='90'%3E%3Cfilter id='h'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8 .35' numOctaves='1' seed='2'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .7 -.25'/%3E%3C/filter%3E%3Cfilter id='v'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.35 1.8' numOctaves='1' seed='9'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .7 -.25'/%3E%3C/filter%3E%3Crect width='90' height='90' filter='url(%23h)'/%3E%3Crect width='90' height='90' filter='url(%23v)'/%3E%3C/svg%3E");
+  background-blend-mode:multiply; text-align:center; font:600 9.5px/1.15 var(--serif); position:relative }
+.pano::before, .pano::after { content:""; height:1px; background:currentColor; opacity:.7; margin:0 4px }
+.pano span { display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden; text-wrap:balance }
+.alto { display:flex; align-items:baseline; gap:8px; min-height:30px; padding-right:96px; flex-wrap:wrap }
+.ano { font:700 21px/1 var(--serif); color:var(--ano-cor); letter-spacing:-.01em }
+.ano.sd { color:var(--g5); font-style:italic; font-weight:600 }
+.ano-fonte { font-size:12px; color:var(--g5) }
+.carimbo { display:inline-block; border:2px solid var(--carimbo); color:var(--carimbo); border-radius:3px; padding:1px 7px 0;
+  font:800 11px/1.5 var(--ui); letter-spacing:.12em; text-transform:uppercase; rotate:var(--rot, -3deg); opacity:.92; align-self:center }
+.ficha h3 { margin:6px 0 2px; font:600 17px/1.25 var(--serif); letter-spacing:-.005em; text-wrap:pretty }
+.ficha h3 a { text-decoration:none }
+.ficha h3 a:hover { text-decoration:underline }
+.ficha h3 a::after { content:""; position:absolute; inset:0; border-radius:10px; z-index:0 }
+.autor { margin:0; color:var(--suave); font-size:14px }
+.desc { grid-column:2; align-self:start; max-height:calc(2 * 1.45em); margin:8px 0 0; font-size:13px; line-height:1.45; color:var(--g6); display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden }
+.pe { grid-column:1 / -1; grid-row:5; display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; margin-top:12px; padding-top:10px; border-top:1px dashed var(--fio); font-size:12.5px; color:var(--g5) }
+.etiqueta { border:3px double var(--g4); padding:1px 8px; color:var(--g7); font-size:11.5px; letter-spacing:.04em; text-transform:uppercase; font-weight:600; background:var(--papel);
+  max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.pe .frete { color:var(--g7); font-weight:600 }
+.pe .porque { flex-basis:100%; color:var(--g5); font-size:12px }
+.preco { position:absolute; right:12px; top:8px; text-align:right; z-index:1; pointer-events:none }
+.preco .v { position:relative; display:inline-block; font:400 28px/1.15 var(--lapis-fonte); color:var(--lapis); -webkit-text-stroke:.25px currentColor; padding:2px 8px; white-space:nowrap }
+.preco .v small { font-size:.62em; margin-right:2px }
+.preco .era { display:block; font:700 16px/1 var(--lapis-fonte); color:var(--g5); text-decoration:line-through 2px var(--lapis); margin-top:-2px }
+.preco .exemplares { display:block; font-size:11.5px; color:var(--g5) }
+.circulo { position:absolute; inset:-7px -8px -6px -8px; width:calc(100% + 16px); height:calc(100% + 13px); overflow:visible; color:var(--lapis) }
+.circulo path { fill:none; stroke:currentColor; stroke-width:2.1; stroke-linecap:round; opacity:.85 }
+.ficha .capa, .ficha .pe a, .ficha .desc { position:relative; z-index:1 }
+
+/* interação assinatura: o carimbo bate e o lápis circula, uma vez, no que é novo para você */
+@media (prefers-reduced-motion: no-preference) {
+  .ficha.estreia .carimbo { animation:bate .42s cubic-bezier(.2,.9,.25,1) both; animation-delay:var(--atraso, 0s) }
+  .ficha.estreia .circulo path { stroke-dasharray:var(--len, 260); stroke-dashoffset:var(--len, 260); animation:risca .9s cubic-bezier(.3,.7,.2,1) forwards; animation-delay:calc(var(--atraso, 0s) + .25s) }
+}
+@keyframes bate { 0% { scale:1.9; opacity:0; filter:blur(2px) } 60% { scale:.94; opacity:1; filter:blur(0) } 100% { scale:1; opacity:.92 } }
+@keyframes risca { to { stroke-dashoffset:0 } }
+.ficha.estreia { border-color:color-mix(in srgb, var(--carimbo) 45%, var(--fio)) }
+
+.vazio { grid-column:1 / -1; padding:56px 24px; text-align:center; background:var(--papel); border:1px solid var(--fio); border-radius:10px; box-shadow:var(--sombra); color:var(--suave) }
+.vazio h3 { margin:0 0 6px; font:400 26px/1.2 var(--lapis-fonte); color:var(--lapis); rotate:-1.5deg }
+.vazio p { margin:0 0 14px }
+.btn { border:1px solid var(--carimbo); background:var(--carimbo); color:var(--sobre-carimbo); border-radius:8px; padding:8px 14px; font-weight:600; cursor:pointer }
+.btn:hover { filter:brightness(1.1) }
+
+.aviso { position:fixed; left:50%; bottom:20px; translate:-50% 0; z-index:30; display:flex; align-items:center; gap:12px; background:var(--tabua); color:#fff;
+  padding:10px 10px 10px 16px; border-radius:12px; box-shadow:0 10px 30px rgba(10,15,30,.35); font-size:14px }
+.aviso[hidden] { display:none }
+.aviso .btn { background:#fff; color:var(--tabua); border-color:#fff }
+
+footer { border-top:1px solid var(--fio); color:var(--g5); font-size:13px }
+footer div { max-width:var(--max); margin:0 auto; padding:18px var(--gut) 28px; display:flex; flex-wrap:wrap; gap:6px 18px; justify-content:space-between }
+
+.fundo-gaveta { display:none }
+
+/* ------------------------------------------------ celular */
+@media (max-width: 1100px) {
+  .corpo { grid-template-columns:1fr }
+  .btn-filtros { display:inline-block }
+  .trilho { position:fixed; inset:auto 0 0 0; top:auto; max-height:86vh; z-index:40; background:var(--papel); border-radius:16px 16px 0 0;
+    padding:0 18px 18px; box-shadow:0 -10px 40px rgba(10,15,30,.3); translate:0 105%; transition:translate .32s cubic-bezier(.2,.8,.2,1); overflow:auto }
+  .trilho.aberto { translate:0 0 }
+  .trilho-topo { display:flex; position:sticky; top:0; z-index:1; align-items:center; justify-content:space-between; background:var(--papel); padding:14px 0 12px; margin-bottom:6px; border-bottom:1px solid var(--fio) }
+  .trilho-topo strong { font:600 18px var(--serif) }
+  .fundo-gaveta.aberto { display:block; position:fixed; inset:0; z-index:35; background:rgba(10,15,30,.45) }
+}
+@media (max-width: 900px) {
+  :root { --gut:16px }
+  .banda-in { padding-top:16px; padding-bottom:14px; align-items:flex-start; gap:10px }
+  .rotulo { padding:11px 16px 10px; width:100% }
+  .ordem { font-size:0; gap:0 } .ordem select { font-size:14px }
+  .rodada { font-size:12px; padding:5px 10px }
+  .aba { padding:10px 13px 11px; font-size:14.5px }
+  .corpo { grid-template-columns:1fr; padding-top:16px }
+  .btn-filtros { display:inline-block }
+  .cabeca h2 { font-size:17px }
+  .ficha { grid-template-columns:64px 1fr; padding:12px 12px 10px; column-gap:12px }
+  .capa { width:64px; height:88px }
+  .alto { padding-right:84px }
+  .preco .v { font-size:24px }
+  .desc { -webkit-line-clamp:2 }
+}
+@media (prefers-reduced-motion: reduce) { .trilho { transition:none } }
+</style>
+</head>
+<body>
+
+<header class="banda">
+  <svg class="marmore" aria-hidden="true" preserveAspectRatio="none">
+    <filter id="marmorizado" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="0.0035 0.016" numOctaves="4" seed="11" result="ruido"/>
+      <feColorMatrix in="ruido" type="matrix" values="1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 1" result="cinza"/>
+      <feComponentTransfer in="cinza" result="veios">
+        <feFuncR type="table" tableValues="0.12 0.12 0.38 0.12 0.10 0.12 0.48 0.12 0.10 0.12"/>
+        <feFuncG type="table" tableValues="0.17 0.17 0.11 0.17 0.14 0.17 0.38 0.17 0.14 0.17"/>
+        <feFuncB type="table" tableValues="0.29 0.29 0.16 0.29 0.25 0.29 0.24 0.29 0.25 0.29"/>
+      </feComponentTransfer>
+      <feTurbulence type="turbulence" baseFrequency="0.006 0.03" numOctaves="2" seed="3" result="pente"/>
+      <feDisplacementMap in="veios" in2="pente" scale="70" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <rect width="100%" height="100%" filter="url(#marmorizado)"/>
+  </svg>
+  <div class="banda-in">
+    <div class="rotulo">
+      <h1>Achados católicos <span>· até <span id="anoMax">1958</span></span></h1>
+      <p id="resumo" class="num">&nbsp;</p>
+    </div>
+    <div class="rodada" id="rodada" role="status"><i></i><span id="rodadaTxt">&nbsp;</span></div>
+  </div>
+  <div class="abas-faixa">
+    <nav class="abas" role="tablist" aria-label="Recorte" id="abas"></nav>
+  </div>
+</header>
+
+<div class="temas-faixa">
+  <div class="temas-in">
+    <button class="btn-filtros" id="abrirFiltros" type="button" aria-controls="trilho" aria-expanded="false">Filtros<b id="nFiltros" hidden>0</b></button>
+    <div class="temas" id="temas" role="group" aria-label="Temas"></div>
+  </div>
+</div>
+
+<div class="corpo">
+  <aside class="trilho" id="trilho" aria-label="Filtros">
+    <div class="trilho-topo"><strong>Filtros</strong><button class="btn" type="button" id="fecharFiltros">Ver achados</button></div>
+    <div class="busca">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <label class="sr" for="q">Buscar</label>
+      <input type="search" id="q" placeholder="Título, autor, editora, sebo…" autocomplete="off">
+    </div>
+    <fieldset class="indice" id="f-preco"><legend>Preço</legend></fieldset>
+    <fieldset class="indice" id="f-epoca"><legend>Época</legend></fieldset>
+    <fieldset class="indice" id="f-capa"><legend>Capa</legend></fieldset>
+    <fieldset>
+      <legend>Mais filtros</legend>
+      <label class="caixa"><input type="checkbox" id="frete"> Só frete grátis</label>
+      <label class="caixa" style="margin-top:8px"><input type="checkbox" id="semClassicos"> Esconder clássicos não religiosos</label>
+      <label class="sr" for="sebo">Sebo</label>
+      <select id="sebo" style="margin-top:12px"></select>
+    </fieldset>
+    <button class="limpar" id="limpar" type="button" hidden>Limpar filtros</button>
+  </aside>
+  <div class="fundo-gaveta" id="fundoGaveta"></div>
+
+  <main>
+    <div class="cabeca">
+      <h2 id="titulo" aria-live="polite">&nbsp;</h2>
+      <label class="ordem">Ordenar
+        <select id="ordem">
+          <option value="recentes">mais recentes</option>
+          <option value="barato">menor preço</option>
+          <option value="caro">maior preço</option>
+          <option value="antigo">mais antigos</option>
+          <option value="relevante">mais relevantes</option>
+        </select>
+      </label>
+    </div>
+    <div class="ativos" id="ativos"></div>
+    <div class="grade" id="grade"></div>
+  </main>
+</div>
+
+<footer><div>
+  <span id="rodape">&nbsp;</span>
+  <span>Dados da <a href="https://www.estantevirtual.com.br" target="_blank" rel="noopener">Estante Virtual</a> · gerado por monitor/monitor.py</span>
+</div></footer>
+
+<div class="aviso" id="aviso" hidden role="status"><span>Há achados novos no monitor.</span><button class="btn" type="button" onclick="location.reload()">Atualizar</button></div>
+
+<script>
+const D = /*__DADOS__*/null;
+(function () {
+"use strict";
+if (!D) { document.getElementById("grade").innerHTML = '<div class="vazio"><h3>Sem dados</h3><p>Rode python monitor/monitor.py para gerar o relatório.</p></div>'; return; }
+
+const $ = (id) => document.getElementById(id);
+const BOM = D.preco_bom;
+const norm = (s) => (s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const data = (s) => s ? new Date(s.replace(" ", "T")) : null;
+const brl = (v) => v == null ? "?" : v.toLocaleString("pt-BR", { minimumFractionDigits: v % 1 ? 2 : 0, maximumFractionDigits: 2 });
+const curta = (s) => { const d = data(s); return d ? d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" }) + (d.getFullYear() !== new Date().getFullYear() ? "/" + d.getFullYear() : "") : "?"; };
+function ha(d) {
+  const m = Math.round((Date.now() - d) / 60000);
+  if (m < 1) return "agora";
+  if (m < 60) return "há " + m + " min";
+  const h = Math.round(m / 60);
+  if (h < 48) return "há " + h + " h";
+  return "há " + Math.round(h / 24) + " dias";
+}
+function hash(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+
+/* -------- estado salvo (só conveniência; a página funciona sem) -------- */
+const ARM = "ev2-estado", VISITA = "ev2-ultima-rodada-vista";
+const ler = (k) => { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (e) { return null; } };
+const gravar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
+const PADRAO = { aba: "todos", tema: "*", epoca: "*", preco: "*", capa: "*", frete: false, semClassicos: false, sebo: "", q: "", ordem: "recentes" };
+const E = Object.assign({}, PADRAO, ler(ARM) || {});
+const vistaAntes = ler(VISITA);
+
+/* -------- preparo dos itens -------- */
+const REF = data(D.gerado) || new Date();
+const SETE_DIAS = 7 * 864e5;
+// o gerador omite campos vazios e os prefixos fixos das URLs
+const URL_LIVRO = "https://www.estantevirtual.com.br/livro/", URL_CAPA = "https://static.estantevirtual.com.br/book/";
+const absoluta = (s, base) => /^https?:/.test(s) ? s : base + s;
+// miniatura no tamanho da ficha (2x de 76x104), em WebP: ~4 KB em vez de ~45 KB da foto original
+const miniatura = (s) => { const u = absoluta(s, URL_CAPA); return u + (u.includes("?") ? "&" : "?") + "ims=152x208/filters:format(webp):quality(80)"; };
+for (const it of D.itens) {
+  it.ev = it.ev || []; it.th = it.th || ["Outros"]; it.p = it.p || 0; it.m = it.m || "";
+  it.u = absoluta(it.u || "", URL_LIVRO);
+  if (it.img) it.img = miniatura(it.img);
+  const vivos = it.ev.filter((e) => e[1] !== "inicial");
+  it.ult = vivos.length ? vivos[vivos.length - 1][0] : "";
+  it.chave = it.ult || it.cad || it.pv || "";
+  it.recente = !!it.ult && (REF - data(it.ult)) < SETE_DIAS;
+  it.estreia = !!it.ult && vistaAntes != null && it.ult > vistaAntes;
+  it.marca = vivos.length ? vivos[vivos.length - 1][1] : "";
+  const queda = vivos.filter((e) => e[1] === "preço caiu").pop();
+  if (queda) { const m = /([\d.]+)\s*$/.exec(queda[3]); if (m && +m[1] > it.p) it.era = +m[1]; }
+  const ex = vivos.filter((e) => e[1] === "novo exemplar").pop();
+  if (ex) it.exTxt = ex[3];
+  it.ep = it.y == null ? "sd" : it.y <= 1900 ? "1900" : it.y <= 1930 ? "1930" : "1958";
+  it.t = it.t.replace(/"{2,}/g, "").trim();
+  it.soClassico = /clássico:/.test(it.m) && it.m.split(", ").every((x) => x.startsWith("clássico:") || x === "categoria");
+  it.busca = norm([it.t, it.a, it.e, it.s, it.m, it.l].join(" "));
+}
+
+/* -------- dimensões de filtro -------- */
+const ABAS = [["novidades", "Novidades"], ["todos", "Todos"], ["bom", "Bom preço"]];
+const PRECOS = [["*", "Qualquer preço"], ["100", "Até R$ 100"], ["200", "Até R$ 200"], ["300", "Até R$ 300"], ["300+", "Acima de R$ 300"]];
+const EPOCAS = [["*", "Todas"], ["com", "Só com ano"], ["1900", "Até 1900"], ["1930", "1901 a 1930"], ["1958", "1931 a " + D.ano_max], ["sd", "Sem ano (s.d.)"]];
+const CAPAS = [["*", "Todas"], ["com", "Com foto da capa"], ["sem", "Sem foto da capa"]];
+const F = {
+  aba: (it, v) => v === "todos" || (v === "novidades" ? it.recente : it.p <= BOM),
+  tema: (it, v) => v === "*" || it.th.includes(v),
+  epoca: (it, v) => v === "*" || (v === "com" ? it.y != null : it.ep === v),
+  preco: (it, v) => v === "*" || (v === "300+" ? it.p > 300 : it.p <= +v),
+  capa: (it, v) => v === "*" || (v === "com" ? !!it.img : !it.img),
+  frete: (it, v) => !v || it.fg,
+  semClassicos: (it, v) => !v || !it.soClassico,
+  sebo: (it, v) => !v || it.s === v,
+  q: (it, v) => { if (!v) return true; const ws = norm(v).split(" "); return ws.every((w) => it.busca.includes(w)); },
+};
+function passa(it, exceto) { for (const k in F) if (k !== exceto && !F[k](it, E[k])) return false; return true; }
+function conta(dim, val) { let n = 0; for (const it of D.itens) if (passa(it, dim) && F[dim](it, val)) n++; return n; }
+
+/* -------- montagem dos controles -------- */
+$("anoMax").textContent = D.ano_max;
+$("abas").innerHTML = ABAS.map(([v, r]) => `<button class="aba" role="tab" type="button" data-v="${v}">${r}<span class="n num"></span></button>`).join("");
+$("temas").innerHTML = [["*", "Todos os temas"]].concat(D.temas.map((t) => [t, t])).map(([v, r]) => `<button class="tema" type="button" data-v="${esc(v)}">${esc(r)}<span class="n num"></span></button>`).join("");
+function indice(id, nome, ops) {
+  const fs = $(id);
+  fs.insertAdjacentHTML("beforeend", ops.map(([v, r]) =>
+    `<label data-v="${v}"><input type="radio" name="${nome}" value="${v}"><span class="rot">${r}</span><span class="pontos"></span><span class="n num"></span></label>`).join(""));
+  fs.addEventListener("change", (e) => { E[nome] = e.target.value; atualizar(); });
+}
+indice("f-preco", "preco", PRECOS);
+indice("f-epoca", "epoca", EPOCAS);
+indice("f-capa", "capa", CAPAS);
+const sebos = {};
+for (const it of D.itens) if (it.s) sebos[it.s] = (sebos[it.s] || 0) + 1;
+$("sebo").innerHTML = '<option value="">Todos os sebos</option>' + Object.keys(sebos).sort((a, b) => sebos[b] - sebos[a] || a.localeCompare(b, "pt-BR"))
+  .map((s) => `<option value="${esc(s)}">${esc(s)} (${sebos[s]})</option>`).join("");
+if (E.sebo && !sebos[E.sebo]) E.sebo = "";
+if (E.tema !== "*" && !D.temas.includes(E.tema)) E.tema = "*";
+
+$("abas").addEventListener("click", (e) => { const b = e.target.closest(".aba"); if (b) { E.aba = b.dataset.v; atualizar(); } });
+$("abas").addEventListener("keydown", (e) => {
+  if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+  const i = ABAS.findIndex(([v]) => v === E.aba), j = (i + (e.key === "ArrowRight" ? 1 : ABAS.length - 1)) % ABAS.length;
+  E.aba = ABAS[j][0]; atualizar(); $("abas").children[j].focus();
+});
+$("temas").addEventListener("click", (e) => { const b = e.target.closest(".tema"); if (b) { E.tema = b.dataset.v; atualizar(); } });
+let esperaBusca;
+$("q").addEventListener("input", (e) => { E.q = e.target.value; clearTimeout(esperaBusca); esperaBusca = setTimeout(atualizar, 150); });
+$("frete").addEventListener("change", (e) => { E.frete = e.target.checked; atualizar(); });
+$("semClassicos").addEventListener("change", (e) => { E.semClassicos = e.target.checked; atualizar(); });
+$("sebo").addEventListener("change", (e) => { E.sebo = e.target.value; atualizar(); });
+$("ordem").addEventListener("change", (e) => { E.ordem = e.target.value; atualizar(); });
+function limpar() { Object.assign(E, { tema: "*", epoca: "*", preco: "*", capa: "*", frete: false, semClassicos: false, sebo: "", q: "" }); atualizar(); }
+$("limpar").addEventListener("click", limpar);
+
+/* gaveta de filtros no celular */
+function gaveta(abrir) {
+  $("trilho").classList.toggle("aberto", abrir); $("fundoGaveta").classList.toggle("aberto", abrir);
+  if (abrir) { $("trilho").setAttribute("role", "dialog"); $("trilho").setAttribute("aria-modal", "true"); }
+  else { $("trilho").removeAttribute("role"); $("trilho").removeAttribute("aria-modal"); }
+  for (const el of document.querySelectorAll("header, .temas-faixa, main, footer")) el.inert = abrir;
+  $("abrirFiltros").setAttribute("aria-expanded", abrir);
+  if (abrir) $("fecharFiltros").focus();
+}
+$("abrirFiltros").addEventListener("click", () => gaveta(true));
+$("fecharFiltros").addEventListener("click", () => { gaveta(false); $("abrirFiltros").focus(); });
+$("fundoGaveta").addEventListener("click", () => gaveta(false));
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && $("trilho").classList.contains("aberto")) { gaveta(false); $("abrirFiltros").focus(); } });
+
+/* -------- fichas -------- */
+const PANOS = ["#5b1a24", "#23402f", "#1f2b4a", "#7a5a1c", "#4a2340", "#3a4148", "#5a2d14"];
+const CIRCULOS = [
+  "M8 30 C 4 12, 40 3, 70 5 S 122 14, 118 32 C 114 50, 70 56, 40 52 S 2 42, 10 26 L 16 20",
+  "M12 22 C 20 6, 64 1, 94 6 S 124 26, 112 42 C 98 56, 44 57, 20 46 S 4 26, 14 16",
+  "M6 28 C 8 10, 52 2, 86 6 S 126 22, 116 38 C 104 54, 52 58, 24 50 S 0 34, 12 22 L 20 14",
+];
+const ROTULO_MARCA = { "novo": "Novo", "preço caiu": "Preço caiu", "novo exemplar": "Mais um exemplar" };
+function ficha(it, idx, estreia) {
+  const h = hash(it.c);
+  const capa = it.img
+    ? `<img loading="lazy" decoding="async" width="76" height="104" src="${esc(it.img)}" alt="" onerror="this.parentNode.innerHTML='<div class=&quot;pano&quot; style=&quot;--pano:${PANOS[h % PANOS.length]}&quot;><span>${esc(esc(it.t)).replace(/'/g, "&#39;")}</span></div>'">`
+    : `<div class="pano" style="--pano:${PANOS[h % PANOS.length]}"><span>${esc(it.t)}</span></div>`;
+  const ano = it.y != null
+    ? `<span class="ano num">${it.y}</span>${it.yf && it.yf !== "anúncio" ? `<span class="ano-fonte">ano pel${it.yf === "título" ? "o" : "a"} ${esc(it.yf)}</span>` : ""}`
+    : `<span class="ano sd" title="sem data">s.d.</span>`;
+  const marca = it.recente && ROTULO_MARCA[it.marca] ? `<span class="carimbo" style="--rot:${-1 - (h % 5)}deg">${ROTULO_MARCA[it.marca]}</span>` : "";
+  const bom = it.p <= BOM;
+  const circulo = bom ? `<svg class="circulo" viewBox="0 0 128 60" preserveAspectRatio="none" aria-hidden="true"><path d="${CIRCULOS[h % 3]}" style="--len:300"/></svg>` : "";
+  const meta = [it.a, it.e].filter(Boolean).map(esc).join(" · ");
+  const pe = [
+    it.s ? `<span class="etiqueta" title="${esc(it.s)}">${esc(it.s)}</span>` : "",
+    it.fg ? `<span class="frete">frete grátis</span>` : "",
+    `<span style="white-space:nowrap">${it.cad ? "anunciado " + curta(it.cad) + " · " : ""}visto ${curta(it.pv)}</span>`,
+    it.m ? `<span class="porque">entrou por: ${esc(it.m.replace(/clássico: /g, ""))}</span>` : "",
+  ].join("");
+  return `<article class="ficha${estreia && it.estreia ? " estreia" : ""}" style="--atraso:${Math.min(idx, 8) * 0.07}s">
+  <a class="capa" href="${esc(it.u)}" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">${capa}</a>
+  <div class="alto">${ano}${marca}</div>
+  <h3><a href="${esc(it.u)}" target="_blank" rel="noopener">${esc(it.t)}</a></h3>
+  <p class="autor">${meta || "&nbsp;"}</p>
+  ${it.d ? `<p class="desc" title="${esc(it.d)}">${esc(it.d)}</p>` : ""}
+  <div class="pe">${pe}</div>
+  <div class="preco"><span class="v num"><small>R$</small>${brl(it.p)}${circulo}</span>${it.era ? `<span class="era num">R$ ${brl(it.era)}</span>` : ""}${it.exTxt ? `<span class="exemplares">${esc(it.exTxt)}</span>` : ""}<span class="sr">${bom ? "bom preço" : ""}</span></div>
+</article>`;
+}
+
+const ORDENS = {
+  recentes: (a, b) => (b.chave > a.chave) - (b.chave < a.chave),
+  barato: (a, b) => a.p - b.p,
+  caro: (a, b) => b.p - a.p,
+  antigo: (a, b) => (a.y == null) - (b.y == null) || (a.y || 0) - (b.y || 0),
+  relevante: (a, b) => (b.pts || 0) - (a.pts || 0) || a.p - b.p,
+};
+
+/* -------- grade em lotes: só monta as fichas que estão perto da tela -------- */
+const LOTE = 48;
+let fila = [], montadas = 0, animar = false;
+const sentinela = document.createElement("div");
+$("grade").after(sentinela);
+const vigia = new IntersectionObserver((es) => { if (es[0].isIntersecting) maisFichas(); }, { rootMargin: "0px 0px 1500px 0px" });
+function maisFichas() {
+  if (montadas >= fila.length) return;
+  const fim = Math.min(montadas + LOTE, fila.length);
+  $("grade").insertAdjacentHTML("beforeend", fila.slice(montadas, fim).map((it, i) => ficha(it, montadas + i, animar)).join(""));
+  montadas = fim;
+  // observar de novo força uma nova checagem: se a sentinela continua visível, vem o próximo lote
+  if (montadas < fila.length) { vigia.unobserve(sentinela); vigia.observe(sentinela); }
+}
+function montarGrade(lista, comAnimacao) {
+  fila = lista; montadas = 0; animar = comAnimacao;
+  $("grade").innerHTML = "";
+  maisFichas();
+}
+
+let primeira = true;
+function atualizar() {
+  gravar(ARM, E);
+  // contagens: cada controle conta com todos os outros filtros aplicados
+  for (const b of $("abas").children) {
+    const v = b.dataset.v; b.setAttribute("aria-selected", v === E.aba); b.tabIndex = v === E.aba ? 0 : -1;
+    b.querySelector(".n").textContent = conta("aba", v);
+  }
+  for (const b of $("temas").children) {
+    const v = b.dataset.v, n = conta("tema", v);
+    b.setAttribute("aria-pressed", v === E.tema); b.querySelector(".n").textContent = n;
+    b.toggleAttribute("data-vazio", n === 0 && v !== E.tema);
+  }
+  for (const [id, dim] of [["f-preco", "preco"], ["f-epoca", "epoca"], ["f-capa", "capa"]]) {
+    for (const l of $(id).querySelectorAll("label")) {
+      const v = l.dataset.v, n = conta(dim, v);
+      l.querySelector("input").checked = v === E[dim];
+      l.querySelector(".n").textContent = n;
+      l.toggleAttribute("data-vazio", n === 0 && v !== E[dim]);
+    }
+  }
+  if ($("q").value !== E.q) $("q").value = E.q;
+  $("frete").checked = E.frete; $("semClassicos").checked = E.semClassicos; $("sebo").value = E.sebo; $("ordem").value = E.ordem;
+
+  const lista = D.itens.filter((it) => passa(it)).sort(ORDENS[E.ordem] || ORDENS.recentes);
+  if (E.aba === "novidades" && E.ordem === "recentes") lista.sort((a, b) => b.estreia - a.estreia);
+
+  // filtros ativos como chips removíveis
+  const ativos = [];
+  if (E.q) ativos.push(["q", "“" + E.q + "”"]);
+  if (E.tema !== "*") ativos.push(["tema", E.tema]);
+  for (const [dim, ops] of [["preco", PRECOS], ["epoca", EPOCAS], ["capa", CAPAS]]) if (E[dim] !== "*") ativos.push([dim, ops.find((o) => o[0] === E[dim])[1]]);
+  if (E.frete) ativos.push(["frete", "Frete grátis"]);
+  if (E.semClassicos) ativos.push(["semClassicos", "Sem clássicos não religiosos"]);
+  if (E.sebo) ativos.push(["sebo", E.sebo]);
+  $("ativos").innerHTML = ativos.map(([k, r]) => `<button class="chip" type="button" data-k="${k}" aria-label="Remover filtro ${esc(r)}">${esc(r)}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M7 7l10 10M17 7 7 17"/></svg></button>`).join("");
+  $("limpar").hidden = !ativos.length;
+  $("nFiltros").hidden = !ativos.length; $("nFiltros").textContent = ativos.length;
+
+  const nome = { novidades: "Novidades dos últimos 7 dias", todos: "Todos os achados", bom: "Bom preço, até R$ " + BOM }[E.aba];
+  $("fecharFiltros").textContent = lista.length ? `Ver ${lista.length} ${lista.length === 1 ? "livro" : "livros"}` : "Nenhum livro";
+  $("titulo").innerHTML = `${nome}<small class="num">${lista.length} ${lista.length === 1 ? "livro" : "livros"}</small>`;
+
+  if (!lista.length) {
+    fila = []; montadas = 0;
+    const semNovidade = E.aba === "novidades" && !ativos.length;
+    $("grade").innerHTML = `<div class="vazio"><h3>${semNovidade ? "Nada novo nesta semana" : "Nenhum livro com esses filtros"}</h3>
+      <p>${semNovidade ? "O monitor continua lendo " + D.fontes + " feeds e buscas. Veja a aba Todos." : "Tente uma faixa de preço ou época mais ampla."}</p>
+      ${semNovidade ? '<button class="btn" type="button" data-ir="todos">Ver todos</button>' : '<button class="btn" type="button" data-limpar>Limpar filtros</button>'}</div>`;
+  } else {
+    montarGrade(lista, primeira);
+  }
+  primeira = false;
+}
+$("ativos").addEventListener("click", (e) => {
+  const b = e.target.closest(".chip"); if (!b) return;
+  const k = b.dataset.k; E[k] = PADRAO[k]; atualizar();
+});
+$("grade").addEventListener("click", (e) => {
+  if (e.target.closest("[data-limpar]")) limpar();
+  const ir = e.target.closest("[data-ir]"); if (ir) { E.aba = ir.dataset.ir; atualizar(); }
+});
+
+/* -------- cabeçalho: resumo, idade da rodada, aviso de versão nova -------- */
+const nNov = D.itens.filter((i) => i.recente).length;
+$("resumo").textContent = `${D.itens.length} achados · ${D.monitorados.toLocaleString("pt-BR")} anúncios monitorados · bom preço até R$ ${BOM}`;
+$("rodape").textContent = `${D.fontes} feeds e buscas · ${nNov} novidades na semana · relatório gerado em ${D.gerado.slice(8, 10)}/${D.gerado.slice(5, 7)} às ${D.gerado.slice(11, 16)}`;
+function idade() {
+  const g = data(D.gerado), min = (Date.now() - g) / 60000;
+  $("rodadaTxt").textContent = (min > 30 ? "monitor parado? última rodada " : "atualizado ") + ha(g);
+  $("rodada").classList.toggle("parada", min > 30);
+}
+idade(); setInterval(idade, 60000);
+
+atualizar();
+
+// marca a rodada como vista quando a página está de fato diante do usuário
+function marcarVista() { if (document.visibilityState === "visible") gravar(VISITA, D.ultima_rodada); }
+setTimeout(marcarVista, 4000);
+document.addEventListener("visibilitychange", () => { if (document.visibilityState === "visible") setTimeout(marcarVista, 4000); });
+
+// a cada 5 min, verifica se há relatório novo (GitHub Pages) ou recarrega quando ocioso (arquivo local).
+// Usa HEAD e compara o ETag com o da primeira checagem, sem baixar a página inteira;
+// se o servidor não mandar ETag nem Last-Modified, cai na comparação antiga pelo conteúdo.
+let mexeu = Date.now(), versaoVista = null;
+for (const ev of ["scroll", "pointerdown", "keydown"]) addEventListener(ev, () => { mexeu = Date.now(); }, { passive: true });
+function checarVersao() {
+  if (document.visibilityState !== "visible") return;
+  fetch(location.href, { method: "HEAD", cache: "no-store" }).then((r) => {
+    if (!r.ok) throw new Error(r.status);
+    const v = r.headers.get("etag") || r.headers.get("last-modified");
+    if (!v) return fetch(location.href, { cache: "no-store" }).then((r2) => r2.text()).then((t) => {
+      if (!t.includes('"gerado":"' + D.gerado + '"')) $("aviso").hidden = false;
+    });
+    if (versaoVista == null) versaoVista = v;
+    else if (v !== versaoVista) $("aviso").hidden = false;
+  }).catch(() => {
+    if (location.protocol === "file:" && Date.now() - mexeu > 120000 && scrollY < 200 && !$("trilho").classList.contains("aberto")) location.reload();
+  });
+}
+setTimeout(checarVersao, 5000);
+setInterval(checarVersao, 300000);
+})();
+</script>
+</body>
+</html>

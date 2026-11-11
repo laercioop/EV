@@ -303,6 +303,7 @@ footer div { max-width:var(--max); margin:0 auto; padding:18px var(--gut) 28px; 
       <h2 id="titulo" aria-live="polite">&nbsp;</h2>
       <label class="ordem">Ordenar
         <select id="ordem">
+          <option value="achado" title="Combina preço e antiguidade: cada ano anterior ao limite e cada real a menos somam um ponto.">melhores achados</option>
           <option value="recentes">mais recentes</option>
           <option value="barato">menor preço</option>
           <option value="caro">maior preço</option>
@@ -347,10 +348,11 @@ function ha(d) {
 function hash(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
 
 /* -------- estado salvo (só conveniência; a página funciona sem) -------- */
-const ARM = "ev2-estado", VISITA = "ev2-ultima-rodada-vista";
+const ARM = "ev3-estado", VISITA = "ev2-ultima-rodada-vista";
 const ler = (k) => { try { return JSON.parse(localStorage.getItem(k) || "null"); } catch (e) { return null; } };
 const gravar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} };
-const PADRAO = { aba: "todos", tema: "*", epoca: "*", preco: "*", capa: "*", frete: false, semClassicos: false, sebo: "", q: "", ordem: "recentes" };
+const PADRAO = { aba: "todos", tema: "*", epoca: "com", preco: "100", capa: "*", frete: false, semClassicos: true, sebo: "", q: "", ordem: "achado" };
+const SEM_FILTROS = { tema: "*", epoca: "*", preco: "*", capa: "*", frete: false, semClassicos: false, sebo: "", q: "" };
 const E = Object.assign({}, PADRAO, ler(ARM) || {});
 const vistaAntes = ler(VISITA);
 
@@ -388,10 +390,10 @@ const PRECOS = [["*", "Qualquer preço"], ["100", "Até R$ 100"], ["200", "Até 
 const EPOCAS = [["*", "Todas"], ["com", "Só com ano"], ["1900", "Até 1900"], ["1930", "1901 a 1930"], ["1958", "1931 a " + D.ano_max], ["sd", "Sem ano (s.d.)"]];
 const CAPAS = [["*", "Todas"], ["com", "Com foto da capa"], ["sem", "Sem foto da capa"]];
 const F = {
-  aba: (it, v) => v === "todos" || (v === "novidades" ? it.recente : it.p <= BOM),
+  aba: (it, v) => v === "todos" || (v === "novidades" ? it.recente : it.p > 0 && it.p <= BOM),
   tema: (it, v) => v === "*" || it.th.includes(v),
   epoca: (it, v) => v === "*" || (v === "com" ? it.y != null : it.ep === v),
-  preco: (it, v) => v === "*" || (v === "300+" ? it.p > 300 : it.p <= +v),
+  preco: (it, v) => v === "*" || (v === "300+" ? it.p > 300 : it.p > 0 && it.p <= +v),
   capa: (it, v) => v === "*" || (v === "com" ? !!it.img : !it.img),
   frete: (it, v) => !v || it.fg,
   semClassicos: (it, v) => !v || !it.soClassico,
@@ -434,7 +436,7 @@ $("frete").addEventListener("change", (e) => { E.frete = e.target.checked; atual
 $("semClassicos").addEventListener("change", (e) => { E.semClassicos = e.target.checked; atualizar(); });
 $("sebo").addEventListener("change", (e) => { E.sebo = e.target.value; atualizar(); });
 $("ordem").addEventListener("change", (e) => { E.ordem = e.target.value; atualizar(); });
-function limpar() { Object.assign(E, { tema: "*", epoca: "*", preco: "*", capa: "*", frete: false, semClassicos: false, sebo: "", q: "" }); atualizar(); }
+function limpar() { Object.assign(E, SEM_FILTROS); atualizar(); }
 $("limpar").addEventListener("click", limpar);
 
 /* gaveta de filtros no celular */
@@ -488,7 +490,10 @@ function ficha(it, idx, estreia) {
 </article>`;
 }
 
+// Cada ano anterior ao limite compensa R$ 1 no preço. Sem ano ou preço válido, fica no fim.
+function pontosAchado(it) { return it.y != null && it.p > 0 ? D.ano_max - it.y + 100 - it.p : -Infinity; }
 const ORDENS = {
+  achado: (a, b) => pontosAchado(b) - pontosAchado(a) || a.p - b.p || (a.y || Infinity) - (b.y || Infinity) || a.t.localeCompare(b.t, "pt-BR"),
   recentes: (a, b) => (b.chave > a.chave) - (b.chave < a.chave),
   barato: (a, b) => a.p - b.p,
   caro: (a, b) => b.p - a.p,
@@ -540,7 +545,7 @@ function atualizar() {
   if ($("q").value !== E.q) $("q").value = E.q;
   $("frete").checked = E.frete; $("semClassicos").checked = E.semClassicos; $("sebo").value = E.sebo; $("ordem").value = E.ordem;
 
-  const lista = D.itens.filter((it) => passa(it)).sort(ORDENS[E.ordem] || ORDENS.recentes);
+  const lista = D.itens.filter((it) => passa(it)).sort(ORDENS[E.ordem] || ORDENS.achado);
   if (E.aba === "novidades" && E.ordem === "recentes") lista.sort((a, b) => b.estreia - a.estreia);
 
   // filtros ativos como chips removíveis
@@ -572,7 +577,7 @@ function atualizar() {
 }
 $("ativos").addEventListener("click", (e) => {
   const b = e.target.closest(".chip"); if (!b) return;
-  const k = b.dataset.k; E[k] = PADRAO[k]; atualizar();
+  const k = b.dataset.k; E[k] = SEM_FILTROS[k]; atualizar();
 });
 $("grade").addEventListener("click", (e) => {
   if (e.target.closest("[data-limpar]")) limpar();

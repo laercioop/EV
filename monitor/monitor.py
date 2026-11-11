@@ -440,7 +440,7 @@ def gerar_relatorio(db, cfg):
         "gerado": agora(), "ultima_rodada": ultima,
         "monitorados": db.execute("SELECT COUNT(*) FROM itens").fetchone()[0],
         "preco_bom": cfg["preco_bom"], "ano_max": cfg["ano_max"],
-        "temas": ["Clássicos"] + [n for n, _ in cfg["_temas"]] + ["Outros"],
+        "temas": [n for n, _ in cfg["_temas"]] + ["Clássicos", "Outros"],
         "fontes": len(cfg["feeds"]) + len(cfg["buscas"]),
         "itens": itens,
     }

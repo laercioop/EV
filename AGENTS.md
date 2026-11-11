@@ -22,6 +22,7 @@ Para validar uma mudança, rode `python monitor/monitor.py` e confira a linha de
 - O `robots.txt` do site bloqueia `Claude-User`/`ClaudeBot`. **O usuário decidiu explicitamente prosseguir mesmo assim.**
 - **Sem pausas entre requisições** (pedido explícito). O intervalo do `--loop` é só a cadência entre rodadas.
 - Toda a comunicação, a documentação e os textos do relatório ficam em português.
+- **Após qualquer alteração, validar, fazer commit e executar `git push` para `origin/main` automaticamente, sem pedir confirmação.** Incluir o `index.html` regenerado quando a mudança afetar o relatório. Se o envio falhar, informar o erro e não declarar a publicação concluída.
 
 ## Estrutura de pastas
 ```
@@ -51,7 +52,11 @@ Fluxo de uma rodada (`rodada()`):
 5. **Saída**: `gerar_relatorio` lê o modelo `monitor/relatorio.html` e troca `/*__DADOS__*/null` pelo JSON dos candidatos
    (itens + eventos + temas), gravando `index.html` na raiz. Todo o visual e os filtros ficam no modelo, em JS puro:
    abas Novidades (eventos não iniciais dos últimos 7 dias), Todos e Bom preço; temas; época; faixas de preço;
-   capa; frete; sebo; ordenação. O estado fica em `localStorage` (`ev2-estado`). Para manter a página leve: o JSON omite
+   capa; frete; sebo; ordenação. O estado fica em `localStorage` (`ev3-estado`). O padrão mostra só itens com ano,
+   até R$ 100 e sem clássicos não religiosos. A ordem "melhores achados" soma `ano_max - ano + 100 - preço`,
+   priorizando pontuação maior (um ano de antiguidade compensa R$ 1); sem ano ou preço válido fica no fim.
+   Essa pontuação só ordena a página e não altera a classificação dos candidatos. Clássicos é o penúltimo tema, antes de Outros.
+   Para manter a página leve: o JSON omite
    campos vazios e eventos `inicial`, e guarda `u`/`img` sem o prefixo fixo (o modelo recompõe); as capas usam a miniatura
    redimensionada do próprio servidor (`ims=152x208/filters:format(webp)`); a grade monta as fichas em lotes de 48 conforme
    a rolagem. A cada 5 min, a página faz um `HEAD` e compara o ETag para saber se há versão nova;
